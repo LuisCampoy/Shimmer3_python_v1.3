@@ -97,61 +97,56 @@ class DataProcessor:
     
     @staticmethod
     def calculate_statistics(data: pd.DataFrame) -> Dict[str, Any]:
-        """Calculate comprehensive statistics"""
+        """Calculate comprehensive statistics (optimized)"""
         stats_dict = {}
-        
         try:
-            # Basic statistics for all numeric columns
-            numeric_cols = data.select_dtypes(include=[np.number]).columns
-            
+            # Use pandas describe for all numeric columns except timestamp/packet_id
+            numeric_cols = data.select_dtypes(include=[np.number]).columns.difference(['timestamp', 'packet_id'])
+            desc = data[numeric_cols].describe(percentiles=[0.25, 0.5, 0.75]).to_dict()
             for col in numeric_cols:
-                if col != 'timestamp' and col != 'packet_id':
-                    col_data = data[col].dropna()
-                    
-                    if len(col_data) > 0:
-                        stats_dict[col] = {
-                            'count': len(col_data),
-                            'mean': float(col_data.mean()),
-                            'std': float(col_data.std()),
-                            'min': float(col_data.min()),
-                            'max': float(col_data.max()),
-                            'median': float(col_data.median()),
-                            'q25': float(col_data.quantile(0.25)),
-                            'q75': float(col_data.quantile(0.75)),
-                            'skewness': float(stats.skew(col_data)),
-                            'kurtosis': float(stats.kurtosis(col_data)),
-                            'rms': float(np.sqrt(np.mean(col_data**2)))
-                        }
-            
-            # Calculate magnitude for 3-axis sensors
-            sensor_types = ['accel', 'gyro', 'mag']
-            for sensor in sensor_types:
-                x_col = f'{sensor}_x'
-                y_col = f'{sensor}_y'
-                z_col = f'{sensor}_z'
-                
-                if all(col in data.columns for col in [x_col, y_col, z_col]):
-                    magnitude = np.sqrt(data[x_col]**2 + data[y_col]**2 + data[z_col]**2)
-                    
-                    stats_dict[f'{sensor}_magnitude'] = {
-                        'mean': float(magnitude.mean()),
-                        'std': float(magnitude.std()),
-                        'min': float(magnitude.min()),
-                        'max': float(magnitude.max()),
-                        'rms': float(np.sqrt(np.mean(magnitude**2)))
+                col_data = data[col].dropna()
+                if len(col_data) > 0:
+                    stats_dict[col] = {
+                        'count': int(desc[col]['count']),
+                        'mean': float(desc[col]['mean']),
+                        'std': float(desc[col]['std']),
+                        'min': float(desc[col]['min']),
+                        'max': float(desc[col]['max']),
+                        'median': float(desc[col]['50%']),
+                        'q25': float(desc[col]['25%']),
+                        'q75': float(desc[col]['75%']),
+                        'skewness': float(stats.skew(col_data)),
+                        'kurtosis': float(stats.kurtosis(col_data)),
+                        'rms': float(np.sqrt(np.mean(np.square(col_data))))
                     }
-            
-            # Data quality metrics
+
+            # Vectorized magnitude calculation for 3-axis sensors
+            for sensor in ['accel', 'gyro', 'mag']:
+                cols = [f'{sensor}_x', f'{sensor}_y', f'{sensor}_z']
+                if all(c in data.columns for c in cols):
+                    arr = data[cols].dropna().values
+                    if arr.shape[0] > 0:
+                        magnitude = np.linalg.norm(arr, axis=1)
+                        stats_dict[f'{sensor}_magnitude'] = {
+                            'mean': float(np.mean(magnitude)),
+                            'std': float(np.std(magnitude)),
+                            'min': float(np.min(magnitude)),
+                            'max': float(np.max(magnitude)),
+                            'rms': float(np.sqrt(np.mean(np.square(magnitude))))
+                        }
+
+            # Data quality metrics (vectorized)
             total_samples = len(data)
+            missing = int(data.isnull().sum().sum())
+            completeness = float((total_samples * len(data.columns) - missing) / (total_samples * len(data.columns)) * 100) if total_samples > 0 else 0
+            sampling_rate_actual = float(len(data) / (data['timestamp'].max() - data['timestamp'].min())) if len(data) > 1 and 'timestamp' in data.columns else 0
             stats_dict['data_quality'] = {
                 'total_samples': total_samples,
-                'missing_samples': int(data.isnull().sum().sum()),
-                'data_completeness': float((total_samples - data.isnull().sum().sum()) / total_samples * 100),
-                'sampling_rate_actual': float(len(data) / (data['timestamp'].max() - data['timestamp'].min())) if len(data) > 1 else 0
+                'missing_samples': missing,
+                'data_completeness': completeness,
+                'sampling_rate_actual': sampling_rate_actual
             }
-            
             return stats_dict
-            
         except Exception as e:
             logging.error(f"Error calculating statistics: {e}")
             return {}
