@@ -139,7 +139,7 @@ class BluetoothManager:
             self.logger.error(f"Error during pairing process: {e}")
             return False
     
-    def create_rfcomm_binding(self, device_address: str, channel: int = 1, rfcomm_port: int = 0) -> str:
+    def create_rfcomm_binding(self, device_address: str, channel: int = 1, rfcomm_port: int = 0) -> Optional[str]:
         """Create RFCOMM binding for serial communication"""
         try:
             rfcomm_device = f"/dev/rfcomm{rfcomm_port}"
@@ -228,7 +228,7 @@ class BluetoothManager:
             self.logger.error(f"Error getting device info: {e}")
             return None
     
-    def prepare_shimmer3_connection(self, device_address: str, max_attempts: int = 3) -> str:
+    def prepare_shimmer3_connection(self, device_address: str, max_attempts: int = 3) -> Optional[str]:
         """Prepare Shimmer3 device for RFCOMM connection"""
         try:
             self.logger.info(f"Preparing Shimmer3 device {device_address} for RFCOMM connection")

@@ -30,7 +30,7 @@ except ImportError:
 
 # Create Class for the application
 class ShimmerStreamer:
-    def __init__(self, config_path: str = None):
+    def __init__(self, config_path: Optional[str] = None):
         """Initialize the Shimmer3 Streamer application"""
         self.logger = logging.getLogger(__name__)
         self.config = None
@@ -57,6 +57,9 @@ class ShimmerStreamer:
     def initialize_components(self):
         """Initialize all system components"""
         try:
+            if self.config is None:
+                raise RuntimeError("Configuration not loaded. Cannot initialize components.")
+
             # Initialize Shimmer client - REMOVE device_id if it's being passed
             shimmer_config = self.config.get('shimmer', {})
             self.shimmer_client = ShimmerClient(shimmer_config)  # Remove any device_id parameter
@@ -94,6 +97,8 @@ class ShimmerStreamer:
                 raise RuntimeError("Shimmer3 connection failed")
 
             # Configure IMU sensors
+            if not isinstance(self.config, dict):
+                raise RuntimeError("Configuration not loaded or invalid format")
             sensors = self.config.get('shimmer.sensors', ['accelerometer', 'gyroscope', 'magnetometer'])
             sampling_rate = self.config.get('shimmer.sampling_rate', 51.2)
 
@@ -137,7 +142,7 @@ class ShimmerStreamer:
                         await self.data_logger.log_data(data_packet)
 
                         # Optional: Real-time processing/display
-                        if self.config.get('display.real_time', False):
+                        if isinstance(self.config, dict) and self.config.get('display.real_time', False):
                             self._display_data(data_packet)
 
                     # Check for export trigger
@@ -156,7 +161,10 @@ class ShimmerStreamer:
                     break
                 except Exception as e:
                     self.logger.error(f'Error during streaming: {e}')
-                    if not self.config.get('error_handling.continue_on_error', True):
+                    continue_on_error = True
+                    if isinstance(self.config, dict):
+                        continue_on_error = self.config.get('error_handling.continue_on_error', True)
+                    if not continue_on_error:
                         break
                     # Brief pause before retry
                     await asyncio.sleep(0.1)
@@ -181,7 +189,11 @@ class ShimmerStreamer:
                 
             self.logger.info('Starting data export...')
 
-            export_formats = self.config.get('export.formats', ['csv', 'hdf5'])  # Fixed: was 'export.fromat'
+            export_formats = []
+            if isinstance(self.config, dict):
+                export_formats = self.config.get('export.formats', ['csv', 'hdf5'])
+            else:
+                export_formats = ['csv', 'hdf5']
 
             for format_type in export_formats:
                 await self.data_exporter.export(format_type)
@@ -258,11 +270,14 @@ class ShimmerStreamer:
             except Exception as e:
                 self.logger.error(f"Export failed: {e}")
             # Sleep a bit to avoid hammering the exporter
-            await asyncio.sleep(self.config.get('export.interval', 30.0)) # export frequency from config file (changed from 2 to 30)
+            interval = 30.0
+            if isinstance(self.config, dict):
+                interval = self.config.get('export.interval', 30.0)
+            await asyncio.sleep(interval) # export frequency from config file (changed from 2 to 30)
 
     async def start(self):        
         # Start background export only when enabled
-        if self.config.get('export.enable_background_loop', False):
+        if isinstance(self.config, dict) and self.config.get('export.enable_background_loop', False):
             asyncio.create_task(self._export_loop())  
 
 def signal_handler(signum: int, frame, app: ShimmerStreamer) -> None:
@@ -306,11 +321,17 @@ async def main() -> None:
 
         # Override config with command line arguments
         if args.device:
-            app.config.set('shimmer.port', args.device)
+            if app.config is not None:
+                if 'shimmer' not in app.config:
+                    app.config['shimmer'] = {}
+                app.config['shimmer']['port'] = args.device
         if args.rate:
-            app.config.set('shimmer.sampling_rate', args.rate)
+            if app.config is not None:
+                if 'shimmer' not in app.config:
+                    app.config['shimmer'] = {}
+                app.config['shimmer']['sampling_rate'] = args.rate
         
-        await app.initialize_components()
+        app.initialize_components()
 
         if args.export_only:
             # Export existing data only
