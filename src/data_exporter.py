@@ -1,7 +1,7 @@
 #Data Exporter Module
 #Handles processing and exporting of Shimmer3 IMU data to various formats
 #Supports data filtering, analysis, and multiple export formats
-#Last revision: 10/12/2025
+#Last revision: 10/13/2025
 
 import asyncio
 import csv
