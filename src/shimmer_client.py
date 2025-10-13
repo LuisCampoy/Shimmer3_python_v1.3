@@ -14,6 +14,8 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
+from .bluetooth_manager import BluetoothManager
+
 
 class ShimmerState(Enum):
     """Shimmer device states"""
@@ -121,47 +123,50 @@ class ShimmerClient:
         
         # Lock for thread safety
         self._lock = asyncio.Lock()
+        self.bluetooth_manager = BluetoothManager()
     
     async def connect(self) -> bool:
-        """Connect to Shimmer3 device"""
-        async with self._lock:
-            try:
-                self.logger.info(f"Attempting to connect to Shimmer3 on {self.port}")
+        """Connect to Shimmer3 device with automatic pairing if needed"""
+        try:
+            self.logger.info(f"Attempting to connect to Shimmer3 device at {self.port}")
+            
+            # Extract MAC address from port (if using Bluetooth)
+            if 'rfcomm' in self.port or len(self.port.replace(':', '')) == 12:
+                # This appears to be a Bluetooth connection
+                device_address = self.config.get('device_address', '00:06:66:B1:4D:A1')
                 
-                # Create serial connection
-                self.serial_conn = serial.Serial(
-                    port=self.port,
-                    baudrate=self.baudrate,
-                    timeout=self.timeout,
-                    parity=serial.PARITY_NONE,
-                    stopbits=serial.STOPBITS_ONE,
-                    bytesize=serial.EIGHTBITS
-                )
+                self.logger.info(f"Bluetooth connection detected for device {device_address}")
                 
-                # Wait a moment for connection to stabilize
-                await asyncio.sleep(0.5)
+                # Ensure device is paired and ready
+                if not self.bluetooth_manager.ensure_device_ready(device_address):
+                    raise ConnectionError(f"Failed to prepare Bluetooth device {device_address} for connection")
                 
-                # Test communication
-                if await self._send_command(self.COMMANDS['GET_SHIMMER_VERSION_COMMAND']):
-                    self.state = ShimmerState.CONNECTED
-                    self.logger.info("Successfully connected to Shimmer3")
-                    
-                    # Get device information
-                    await self._get_device_info()
-                    return True
-                else:
-                    self.logger.error("Failed to communicate with Shimmer3")
-                    if self.serial_conn:
-                        self.serial_conn.close()
-                        self.serial_conn = None
-                    return False
+                self.logger.info(f"Bluetooth device {device_address} is ready for connection")
+            
+            # Proceed with existing connection logic
+            self.ser = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
+            
+            if not self.ser.is_open:
+                self.ser.open()
+            
+            self.logger.info(f"Serial connection established to {self.port}")
+            
+            # Wait for device to be ready
+            await asyncio.sleep(2)
+            
+            # Send inquiry command to verify connection
+            if await self.send_command('inquiry'):
+                self.logger.info("Shimmer3 device responded to inquiry command")
+                self.connected = True
+                return True
+            else:
+                raise ConnectionError("Shimmer3 device did not respond to inquiry command")
                 
-            except Exception as e:
-                self.logger.error(f"Failed to establish communication with Shimmer3: {e}")
-                if self.serial_conn:
-                    self.serial_conn.close()
-                    self.serial_conn = None
-                return False
+        except Exception as e:
+            self.logger.error(f"Connection failed: {e}")
+            if hasattr(self, 'ser') and self.ser and self.ser.is_open:
+                self.ser.close()
+            return False
     
     async def disconnect(self) -> None:
         """Disconnect from Shimmer3 device"""
