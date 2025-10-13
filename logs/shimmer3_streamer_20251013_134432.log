@@ -1,0 +1,26 @@
+2025-10-13 13:44:32,343 - main - INFO - Shimmer3 Streamer Application Initialized
+2025-10-13 13:44:32,352 - data_logger - WARNING - Could not write metadata: Object of type datetime is not JSON serializable
+2025-10-13 13:44:32,352 - data_logger - INFO - Created new log file: data/raw/shimmer3_data_20251013_134432_001_20251013_134432.csv
+2025-10-13 13:44:32,352 - data_logger - INFO - DataLogger initialized - Format: csv, Output: data/raw, Buffer: 1000
+2025-10-13 13:44:32,352 - data_exporter - INFO - DataExporter initialized - Input: data/raw, Output: data/processed
+2025-10-13 13:44:32,352 - main - INFO - All components initialized successfully
+2025-10-13 13:44:32,352 - shimmer_client - INFO - Attempting to connect to Shimmer3 device at /dev/rfcomm0
+2025-10-13 13:44:32,353 - shimmer_client - INFO - Bluetooth connection detected for device /dev/rfcomm0
+2025-10-13 13:44:32,353 - src.bluetooth_manager - INFO - Ensuring device /dev/rfcomm0 is ready for connection
+2025-10-13 13:44:32,386 - src.bluetooth_manager - ERROR - Failed to list paired devices: 
+2025-10-13 13:44:32,386 - src.bluetooth_manager - INFO - Pairing attempt 1/3
+2025-10-13 13:44:32,386 - src.bluetooth_manager - INFO - Attempting to pair with device /dev/rfcomm0
+2025-10-13 13:44:32,386 - src.bluetooth_manager - INFO - Scanning for device /dev/rfcomm0...
+2025-10-13 13:44:49,543 - main - INFO - Stopping streaming...
+2025-10-13 13:44:52,554 - src.bluetooth_manager - WARNING - Device /dev/rfcomm0 not found during scan
+2025-10-13 13:44:52,555 - src.bluetooth_manager - ERROR - Cannot find device /dev/rfcomm0 for pairing
+2025-10-13 13:44:52,555 - src.bluetooth_manager - INFO - Pairing attempt failed, retrying in 5 seconds...
+2025-10-13 13:44:57,555 - src.bluetooth_manager - INFO - Pairing attempt 2/3
+2025-10-13 13:44:57,556 - src.bluetooth_manager - INFO - Attempting to pair with device /dev/rfcomm0
+2025-10-13 13:44:57,556 - src.bluetooth_manager - INFO - Scanning for device /dev/rfcomm0...
+2025-10-13 13:45:17,712 - src.bluetooth_manager - WARNING - Device /dev/rfcomm0 not found during scan
+2025-10-13 13:45:17,712 - src.bluetooth_manager - ERROR - Cannot find device /dev/rfcomm0 for pairing
+2025-10-13 13:45:17,712 - src.bluetooth_manager - INFO - Pairing attempt failed, retrying in 5 seconds...
+2025-10-13 13:45:22,713 - src.bluetooth_manager - INFO - Pairing attempt 3/3
+2025-10-13 13:45:22,713 - src.bluetooth_manager - INFO - Attempting to pair with device /dev/rfcomm0
+2025-10-13 13:45:22,713 - src.bluetooth_manager - INFO - Scanning for device /dev/rfcomm0...

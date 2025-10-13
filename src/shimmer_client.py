@@ -14,15 +14,13 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
-from .bluetooth_manager import BluetoothManager
-
+from src.bluetooth_manager import BluetoothManager
 
 class ShimmerState(Enum):
     """Shimmer device states"""
     DISCONNECTED = 0
     CONNECTED = 1
     STREAMING = 2
-
 
 class SensorType(Enum):
     """Available sensor types"""

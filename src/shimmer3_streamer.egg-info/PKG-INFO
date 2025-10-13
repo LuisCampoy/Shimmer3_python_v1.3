@@ -73,6 +73,10 @@ pip install -r requirements.txt
 
 # Install in development mode
 pip install -e .
+
+# install bluez tools
+sudo apt-get update && sudo apt-get install -y bluez-tools
+sudo apt install mono-devel
 ```
 
 ## Configuration
@@ -239,12 +243,14 @@ Simmer3_1.1/
 ├── data/                            # Data directories (raw/processed)
 ├── logs/                            # Application logs
 └── run_shimmer.py                   # Entry point script
-```luis@luis-cornell:~$ hciconfig
-    hci0:	Type: Primary  Bus: USB
-	BD Address: 24:0A:64:1D:0A:AC  ACL MTU: 1022:8  SCO MTU: 183:5
-	UP RUNNING ISCAN 
-	RX bytes:80224 acl:0 sco:0 events:2218 errors:0
-	TX bytes:7005 acl:0 sco:0 commands:198 errors:0
+```
+
+luis@luis-cornell:~$ hciconfig
+hci0:	Type: Primary  Bus: USB
+BD Address: 24:0A:64:1D:0A:AC  ACL MTU: 1022:8  SCO MTU: 183:5
+UP RUNNING ISCAN 
+RX bytes:80224 acl:0 sco:0 events:2218 errors:0
+TX bytes:7005 acl:0 sco:0 commands:198 errors:0
 
 luis@luis-cornell:~$ hcitool scan
 Scanning ...
@@ -278,4 +284,4 @@ ls -la /dev/rfcomm0
 
 **Author**: Luis Campoy  
 **Version**: 1.1.0  
-**Last Updated**: October 11, 2025
+**Last Updated**: October 13, 2025
