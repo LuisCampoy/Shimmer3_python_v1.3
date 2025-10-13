@@ -24,3 +24,9 @@
 2025-10-13 13:45:22,713 - src.bluetooth_manager - INFO - Pairing attempt 3/3
 2025-10-13 13:45:22,713 - src.bluetooth_manager - INFO - Attempting to pair with device /dev/rfcomm0
 2025-10-13 13:45:22,713 - src.bluetooth_manager - INFO - Scanning for device /dev/rfcomm0...
+2025-10-13 13:45:42,898 - src.bluetooth_manager - WARNING - Device /dev/rfcomm0 not found during scan
+2025-10-13 13:45:42,898 - src.bluetooth_manager - ERROR - Cannot find device /dev/rfcomm0 for pairing
+2025-10-13 13:45:42,899 - src.bluetooth_manager - ERROR - Failed to pair device /dev/rfcomm0 after 3 attempts
+2025-10-13 13:45:42,899 - shimmer_client - ERROR - Connection failed: Failed to prepare Bluetooth device /dev/rfcomm0 for connection
+2025-10-13 13:45:42,899 - main - ERROR - Could not connect to Shimmer3. Aborting initialization.
+2025-10-13 13:45:42,899 - main - ERROR - Failed to connect/configure Shimmer3: Shimmer3 connection failed
