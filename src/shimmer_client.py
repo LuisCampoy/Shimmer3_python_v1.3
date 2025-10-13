@@ -133,7 +133,7 @@ class ShimmerClient:
             # Extract MAC address from port (if using Bluetooth)
             if 'rfcomm' in self.port or len(self.port.replace(':', '')) == 12:
                 # This appears to be a Bluetooth connection
-                device_address = self.config.get('device_address', '00:06:66:B1:4D:A1')
+                device_address = self.port  # Use self.port as the Bluetooth address
                 
                 self.logger.info(f"Bluetooth connection detected for device {device_address}")
                 
@@ -144,7 +144,7 @@ class ShimmerClient:
                 self.logger.info(f"Bluetooth device {device_address} is ready for connection")
             
             # Proceed with existing connection logic
-            self.ser = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
+            self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
             
             if not self.ser.is_open:
                 self.ser.open()
@@ -155,9 +155,9 @@ class ShimmerClient:
             await asyncio.sleep(2)
             
             # Send inquiry command to verify connection
-            if await self.send_command('inquiry'):
+            if await self._send_command(self.COMMANDS['GET_INQUIRY_COMMAND']):
                 self.logger.info("Shimmer3 device responded to inquiry command")
-                self.connected = True
+                self.state = ShimmerState.CONNECTED
                 return True
             else:
                 raise ConnectionError("Shimmer3 device did not respond to inquiry command")
