@@ -82,47 +82,34 @@ class ShimmerClient:
         'SHIMMER_VERSION_RESPONSE': 0x40,
     }
     
-    def __init__(self, config):
-        """
-        Initialize ShimmerClient
-        
-        Args:
-            device_id: Shimmer device ID
-            port: Serial port or Bluetooth address
-            baudrate: Communication baudrate
-            timeout: Connection timeout in seconds
-        """
+    def __init__(self, config, device_id=None):  # Add device_id parameter with default
+        """Initialize Shimmer3 client with configuration"""
         self.config = config
-        self.device_id = config.get('device_id')
-        self.port = config.get('port', '/dev/ttyUSB0')
-        self.baud_rate = config.get('baudrate', 115200)
-        self.timeout = config.get('timeout', 5.0)
+        self.device_id = device_id or config.get('device_id', 'shimmer3_default')
         
-        self.serial_conn: Optional[serial.Serial] = None
-        self.state = ShimmerState.DISCONNECTED
-        self.enabled_sensors: List[SensorType] = []
-        self.sampling_rate = 51.2
-        self.packet_size = 0
-        self.calibration_data: Dict[str, Any] = {}
+        # Extract configuration parameters
+        self.port = config.get('port', '/dev/rfcomm0')
+        self.baud_rate = config.get('baud_rate', 115200)
+        self.timeout = config.get('timeout', 5)
+        self.sampling_rate = config.get('sampling_rate', 51.2)
+        self.sensors = config.get('sensors', ['accelerometer', 'gyroscope', 'magnetometer'])
         
-        # Data parsing
-        self.data_buffer = bytearray()
-        self.packet_counter = 0
+        # Initialize Bluetooth manager
+        self.bluetooth_manager = BluetoothManager()
         
-        # Logging
+        # Connection state
+        self.ser = None
+        self.connected = False
+        self.streaming = False
+        
+        # Data buffer
+        self.data_buffer = []
+        
+        # Logger
         self.logger = logging.getLogger(__name__)
         
-        # Sensor ranges (configurable)
-        self.sensor_ranges = {
-            'accelerometer': 2,  # ±2g
-            'gyroscope': 250,    # ±250°/s  
-            'magnetometer': 1    # ±1.3 Ga
-        }
-        
-        # Lock for thread safety
-        self._lock = asyncio.Lock()
-        self.bluetooth_manager = BluetoothManager()
-    
+        self.logger.info(f"ShimmerClient initialized for device {self.device_id}")
+
     async def connect(self):
         """Connect to Shimmer3 device with automatic RFCOMM setup"""
         try:

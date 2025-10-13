@@ -1,0 +1,2 @@
+2025-10-13 14:04:44,750 - main - INFO - Shimmer3 Streamer Application Initialized
+2025-10-13 14:04:44,751 - main - ERROR - Failed to initialize components: ShimmerClient.__init__() got an unexpected keyword argument 'device_id'

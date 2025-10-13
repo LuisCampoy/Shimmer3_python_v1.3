@@ -11,6 +11,8 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any
+import os
+import json
 
 # Fixed imports - use absolute imports for entry point compatibility
 try:
@@ -27,76 +29,51 @@ except ImportError:
     from utils.config import Config
 
 # Create Class for the application
-class Shimmer3StreamerApp:
-    def __init__(self, config_path: Optional[str] = None):
-        self.config = Config(config_path)
-        self.shimmer_client: Optional[ShimmerClient] = None
-        self.data_logger: Optional[DataLogger] = None
-        self.data_exporter: Optional[DataExporter] = None
-        self.running = False
- 
-        # Setting up logging
-        self._setup_logging()
-
-    def _setup_logging(self) -> None:
-        '''
-        Set up application logging.
-        Args:
-            self: Instance of the class.
-        Returns:
-            None
-        '''
-        log_dir: Path = Path(self.config.get('logging.log_directory', 'logs'))
-        log_dir.mkdir(parents=True, exist_ok=True)
-
-        log_level: str = self.config.get('logging.level', 'INFO')
-        timestamp: str = datetime.now().strftime('%Y%m%d_%H%M%S')
-        log_file: Path = log_dir / f'shimmer3_streamer_{timestamp}.log'
-
-        logging.basicConfig(
-            level=getattr(logging, log_level),
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler(sys.stdout)
-            ]
-        )
-
-        self.logger: logging.Logger = logging.getLogger(__name__)
-        self.logger.info('Shimmer3 Streamer Application Initialized')
-
-    async def initialize_components(self) -> None:
-        '''
-        Initialize Shimmer client, data logger, and data exporter.
-        Args:
-            self: Instance of the class.
-        Returns:
-            None
-        '''
-        try:
-            # Initialize Shimmer Client
-            self.shimmer_client = ShimmerClient(
-                device_id=self.config.get('shimmer.device_id'),
-                port=self.config.get('shimmer.port', '/dev/ttyUSB0'),
-                baudrate=self.config.get('shimmer.baudrate', 115200)
-            )
-
-            # Initialize data_logger
-            self.data_logger = DataLogger(
-                output_dir=self.config.get('data.raw_directory', 'data/raw'),
-                file_format=self.config.get('data.format', 'csv')
-            )
-
-            # Initialize data exporter
-            self.data_exporter = DataExporter(
-                input_dir=self.config.get('data.raw_directory', 'data/raw'),
-                output_dir=self.config.get('data.processed_directory', 'data/processed'),
-            )
-
-            self.logger.info('All components initialized successfully')
+class ShimmerStreamer:
+    def __init__(self, config_path: str = None):
+        """Initialize the Shimmer3 Streamer application"""
+        self.logger = logging.getLogger(__name__)
+        self.config = None
+        self.shimmer_client = None
+        self.data_logger = None
+        self.data_exporter = None
         
+        # Load configuration
+        if config_path is None:
+            config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'shimmer_config.json')
+        
+        self.load_config(config_path)
+        
+    def load_config(self, config_path: str):
+        """Load configuration from JSON file"""
+        try:
+            with open(config_path, 'r') as f:
+                self.config = json.load(f)
+            self.logger.info(f"Configuration loaded from {config_path}")
         except Exception as e:
-            self.logger.error(f'Failed to initialize components: {e}')
+            self.logger.error(f"Failed to load configuration: {e}")
+            raise
+    
+    def initialize_components(self):
+        """Initialize all system components"""
+        try:
+            # Initialize Shimmer client - REMOVE device_id if it's being passed
+            shimmer_config = self.config.get('shimmer', {})
+            self.shimmer_client = ShimmerClient(shimmer_config)  # Remove any device_id parameter
+            
+            # Initialize data logger
+            data_config = self.config.get('data', {})
+            self.data_logger = DataLogger(data_config)
+            
+            # Initialize data exporter
+            export_config = self.config.get('export', {})
+            if export_config.get('enabled', False):
+                self.data_exporter = DataExporter(export_config)
+            
+            self.logger.info("All components initialized successfully")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to initialize components: {e}")
             raise
 
     async def connect_shimmer(self) -> None:
@@ -288,7 +265,7 @@ class Shimmer3StreamerApp:
         if self.config.get('export.enable_background_loop', False):
             asyncio.create_task(self._export_loop())  
 
-def signal_handler(signum: int, frame, app: Shimmer3StreamerApp) -> None:
+def signal_handler(signum: int, frame, app: ShimmerStreamer) -> None:
     '''
     Handles shutdown signals
     Args:
@@ -321,7 +298,7 @@ async def main() -> None:
 
     try:
         # Initialize application
-        app = Shimmer3StreamerApp(args.config)
+        app = ShimmerStreamer(args.config)
 
         # Setup signal handlers with proper lambda functions
         signal.signal(signal.SIGINT, lambda s, f: signal_handler(s, f, app))

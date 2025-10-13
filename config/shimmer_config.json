@@ -2,6 +2,7 @@
   "shimmer": {
     "port": "/dev/rfcomm0",
     "device_address": "00:06:66:B1:4D:A1",
+    "device_id": "shimmer3_001",
     "baud_rate": 115200,
     "timeout": 5,
     "sampling_rate": 51.2,
