@@ -1,3 +1,7 @@
+# Bluetooth manager
+# Created 10/13/2025
+# Last update 10/13/2025
+
 import subprocess
 import re
 import logging
