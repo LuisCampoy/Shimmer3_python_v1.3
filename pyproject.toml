@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shimmer3-streamer"
+version = "1.1.0"
+description = "Shimmer3 IMU Data Streaming, Logging, and Export Tool"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "pyserial>=3.5",
+    "pandas>=1.5.0",
+    "numpy>=1.21.0",
+    "h5py>=3.7.0",
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "scipy>=1.9.0",
+    "openpyxl>=3.0.0",
+    "aiofiles>=0.8.0",
+]
+
+[project.scripts]
+shimmer3-stream = "src.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"

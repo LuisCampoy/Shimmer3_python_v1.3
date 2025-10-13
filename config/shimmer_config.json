@@ -1,0 +1,44 @@
+{
+  "logging": {
+    "log_directory": "logs",
+    "level": "INFO"
+  },
+  "shimmer": {
+    "device_id": null,
+    "port": "/dev/rfcomm0",
+    "baudrate": 115200,
+    "sampling_rate": 51.2,
+    "sensors": ["accelerometer", "gyroscope", "magnetometer"],
+    "sensor_range": {
+      "accelerometer": 2,
+      "gyroscope": 250,
+      "magnetometer": 1
+    }
+  },
+  "data": {
+    "raw_directory": "data/raw",
+    "processed_directory": "data/processed",
+    "format": "csv",
+    "max_file_size_mb": 100,
+    "buffer_size": 1000
+  },
+  "export": {
+    "formats": ["csv", "hdf5"],
+    "interval_seconds": 60,
+    "min_records_threshold": 1000,
+    "enable_statistics": true,
+    "enable_plots": false,
+    "quarantine_corrupted_files": true,
+    "real_time": false,
+    "compression": true,
+    "enable_background_loop": false
+  },
+  "display": {
+    "real_time": false,
+    "update_interval": 0.1
+  },
+  "error_handling": {
+    "continue_on_error": true,
+    "max_retries": 3
+  }
+}

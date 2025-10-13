@@ -1,0 +1,1194 @@
+2025-10-10 17:00:38,076 - main - INFO - Shimmer3 Streamer Application Initialized
+2025-10-10 17:00:38,084 - data_logger - INFO - Created new log file: data/raw/shimmer3_data_20251010_170038_001_20251010_170038.csv
+2025-10-10 17:00:38,084 - data_logger - INFO - DataLogger initialized - Format: csv, Output: data/raw, Buffer: 1000
+2025-10-10 17:00:38,084 - data_exporter - INFO - DataExporter initialized - Input: data/raw, Output: data/processed
+2025-10-10 17:00:38,084 - main - INFO - All components initialized successfully
+2025-10-10 17:00:38,084 - shimmer_client - INFO - Attempting to connect to Shimmer3 on /dev/rfcomm0
+2025-10-10 17:00:41,317 - shimmer_client - INFO - Successfully connected to Shimmer3
+2025-10-10 17:00:43,385 - shimmer_client - INFO - Calibration data parsed
+2025-10-10 17:00:43,783 - shimmer_client - INFO - Configured sensors: ['accelerometer', 'gyroscope', 'magnetometer'], sampling rate: 51.2 Hz
+2025-10-10 17:00:43,783 - main - INFO - Shimmer3 connected and configured with sensors: ['accelerometer', 'gyroscope', 'magnetometer']
+2025-10-10 17:00:43,783 - main - INFO - Starting data streaming...
+2025-10-10 17:00:43,835 - shimmer_client - INFO - Started streaming
+2025-10-10 17:01:04,811 - main - INFO - Starting data export...
+2025-10-10 17:01:04,812 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:04,817 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:04,871 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:04,872 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:04,872 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:04,873 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:04,873 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:04,874 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:04,877 - data_exporter - INFO - Combined data: 1781 records from 2 files
+2025-10-10 17:01:05,025 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170104_statistics.json
+2025-10-10 17:01:05,025 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170104.csv
+2025-10-10 17:01:05,025 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:05,026 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:05,027 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,056 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,057 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,057 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,058 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,058 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,059 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,061 - data_exporter - INFO - Combined data: 1781 records from 2 files
+2025-10-10 17:01:05,072 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170105.h5
+2025-10-10 17:01:05,072 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:05,073 - main - INFO - Data export completed successfully
+2025-10-10 17:01:05,084 - main - INFO - Starting data export...
+2025-10-10 17:01:05,084 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:05,085 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,120 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,121 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,122 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,122 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,123 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,124 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,128 - data_exporter - INFO - Combined data: 1781 records from 2 files
+2025-10-10 17:01:05,280 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170105_statistics.json
+2025-10-10 17:01:05,280 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170105.csv
+2025-10-10 17:01:05,280 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:05,280 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:05,281 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,310 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,310 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,311 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,311 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,312 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,312 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,314 - data_exporter - INFO - Combined data: 1781 records from 2 files
+2025-10-10 17:01:05,323 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170105.h5
+2025-10-10 17:01:05,324 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:05,324 - main - INFO - Data export completed successfully
+2025-10-10 17:01:05,334 - main - INFO - Starting data export...
+2025-10-10 17:01:05,335 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:05,335 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,367 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,368 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,368 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,368 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,369 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,369 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,371 - data_exporter - INFO - Combined data: 1781 records from 2 files
+2025-10-10 17:01:05,503 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170105_statistics.json
+2025-10-10 17:01:05,503 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170105.csv
+2025-10-10 17:01:05,504 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:05,504 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:05,505 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,535 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,536 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,536 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,536 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,537 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,537 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,539 - data_exporter - INFO - Combined data: 1781 records from 2 files
+2025-10-10 17:01:05,555 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170105.h5
+2025-10-10 17:01:05,555 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:05,555 - main - INFO - Data export completed successfully
+2025-10-10 17:01:05,566 - main - INFO - Starting data export...
+2025-10-10 17:01:05,567 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:05,571 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,602 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,602 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,603 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,603 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,604 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,605 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,606 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:05,707 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170105_statistics.json
+2025-10-10 17:01:05,707 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170105.csv
+2025-10-10 17:01:05,708 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:05,708 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:05,709 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,730 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,730 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,731 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,731 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,731 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,732 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,733 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:05,741 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170105.h5
+2025-10-10 17:01:05,741 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:05,741 - main - INFO - Data export completed successfully
+2025-10-10 17:01:05,752 - main - INFO - Starting data export...
+2025-10-10 17:01:05,753 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:05,755 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,781 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,782 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,782 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,783 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,783 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,784 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,785 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:05,920 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170105_statistics.json
+2025-10-10 17:01:05,921 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170105.csv
+2025-10-10 17:01:05,921 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:05,921 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:05,922 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:05,942 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:05,942 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:05,943 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:05,943 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:05,943 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:05,944 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:05,945 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:05,953 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170105.h5
+2025-10-10 17:01:05,954 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:05,954 - main - INFO - Data export completed successfully
+2025-10-10 17:01:05,965 - main - INFO - Starting data export...
+2025-10-10 17:01:05,965 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:05,966 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,011 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,012 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,012 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,012 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,013 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,013 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,014 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,117 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170106_statistics.json
+2025-10-10 17:01:06,117 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170106.csv
+2025-10-10 17:01:06,117 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:06,117 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:06,118 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,142 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,142 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,143 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,143 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,144 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,144 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,145 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,154 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170106.h5
+2025-10-10 17:01:06,154 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:06,154 - main - INFO - Data export completed successfully
+2025-10-10 17:01:06,165 - main - INFO - Starting data export...
+2025-10-10 17:01:06,166 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:06,167 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,194 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,194 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,195 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,195 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,196 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,196 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,197 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,305 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170106_statistics.json
+2025-10-10 17:01:06,305 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170106.csv
+2025-10-10 17:01:06,305 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:06,305 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:06,306 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,330 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,330 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,331 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,331 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,332 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,332 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,333 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,342 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170106.h5
+2025-10-10 17:01:06,343 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:06,343 - main - INFO - Data export completed successfully
+2025-10-10 17:01:06,353 - main - INFO - Starting data export...
+2025-10-10 17:01:06,354 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:06,355 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,385 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,386 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,386 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,387 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,387 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,387 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,388 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,500 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170106_statistics.json
+2025-10-10 17:01:06,500 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170106.csv
+2025-10-10 17:01:06,500 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:06,500 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:06,501 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,524 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,525 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,525 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,525 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,526 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,526 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,527 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,536 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170106.h5
+2025-10-10 17:01:06,536 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:06,536 - main - INFO - Data export completed successfully
+2025-10-10 17:01:06,547 - main - INFO - Starting data export...
+2025-10-10 17:01:06,548 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:06,549 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,576 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,576 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,577 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,577 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,577 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,578 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,579 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,688 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170106_statistics.json
+2025-10-10 17:01:06,688 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170106.csv
+2025-10-10 17:01:06,688 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:06,688 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:06,689 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,706 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,707 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,707 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,708 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,708 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,708 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,709 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,720 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170106.h5
+2025-10-10 17:01:06,721 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:06,722 - main - INFO - Data export completed successfully
+2025-10-10 17:01:06,733 - main - INFO - Starting data export...
+2025-10-10 17:01:06,733 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:06,734 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,763 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,763 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,764 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,764 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,765 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,765 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,766 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,886 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170106_statistics.json
+2025-10-10 17:01:06,886 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170106.csv
+2025-10-10 17:01:06,887 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:06,887 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:06,888 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,913 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,914 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,914 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,914 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,915 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,915 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,917 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:06,925 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170106.h5
+2025-10-10 17:01:06,925 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:06,925 - main - INFO - Data export completed successfully
+2025-10-10 17:01:06,936 - main - INFO - Starting data export...
+2025-10-10 17:01:06,936 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:06,938 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:06,966 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:06,966 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:06,967 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:06,967 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:06,968 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:06,969 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:06,970 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:07,079 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170106_statistics.json
+2025-10-10 17:01:07,079 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170106.csv
+2025-10-10 17:01:07,079 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:07,079 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:07,080 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,103 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,104 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,104 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,105 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,105 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,105 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,106 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:07,115 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170107.h5
+2025-10-10 17:01:07,115 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:07,115 - main - INFO - Data export completed successfully
+2025-10-10 17:01:07,126 - main - INFO - Starting data export...
+2025-10-10 17:01:07,127 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:07,128 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,156 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,157 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,157 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,157 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,158 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,158 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,160 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:07,271 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170107_statistics.json
+2025-10-10 17:01:07,271 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170107.csv
+2025-10-10 17:01:07,271 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:07,272 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:07,272 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,296 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,297 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,297 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,298 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,298 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,298 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,299 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:07,308 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170107.h5
+2025-10-10 17:01:07,308 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:07,308 - main - INFO - Data export completed successfully
+2025-10-10 17:01:07,319 - main - INFO - Starting data export...
+2025-10-10 17:01:07,319 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:07,320 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,348 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,348 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,349 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,349 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,349 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,350 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,351 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:07,472 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170107_statistics.json
+2025-10-10 17:01:07,473 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170107.csv
+2025-10-10 17:01:07,473 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:07,473 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:07,474 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,499 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,499 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,500 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,500 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,501 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,501 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,502 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:07,510 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170107.h5
+2025-10-10 17:01:07,510 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:07,511 - main - INFO - Data export completed successfully
+2025-10-10 17:01:07,521 - main - INFO - Starting data export...
+2025-10-10 17:01:07,522 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:07,523 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,549 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,549 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,550 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,550 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,550 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,551 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,552 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:07,656 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170107_statistics.json
+2025-10-10 17:01:07,656 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170107.csv
+2025-10-10 17:01:07,657 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:07,657 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:07,658 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,686 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,687 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,687 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,688 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,688 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,688 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,691 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:07,700 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170107.h5
+2025-10-10 17:01:07,700 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:07,700 - main - INFO - Data export completed successfully
+2025-10-10 17:01:07,711 - main - INFO - Starting data export...
+2025-10-10 17:01:07,711 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:07,712 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,757 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,758 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,759 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,759 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,760 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,761 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,763 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:07,908 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170107_statistics.json
+2025-10-10 17:01:07,908 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170107.csv
+2025-10-10 17:01:07,908 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:07,908 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:07,909 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:07,945 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:07,945 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:07,946 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:07,946 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:07,947 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:07,947 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:07,949 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:07,958 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170107.h5
+2025-10-10 17:01:07,958 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:07,958 - main - INFO - Data export completed successfully
+2025-10-10 17:01:07,969 - main - INFO - Starting data export...
+2025-10-10 17:01:07,970 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:07,971 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:08,035 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:08,035 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:08,036 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:08,036 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:08,037 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:08,037 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:08,040 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:08,241 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170108_statistics.json
+2025-10-10 17:01:08,242 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170108.csv
+2025-10-10 17:01:08,242 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:08,242 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:08,243 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:08,283 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:08,284 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:08,285 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:08,286 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:08,286 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:08,288 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:08,293 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:08,302 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170108.h5
+2025-10-10 17:01:08,302 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:08,302 - main - INFO - Data export completed successfully
+2025-10-10 17:01:08,313 - main - INFO - Starting data export...
+2025-10-10 17:01:08,313 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:08,314 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:08,349 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:08,350 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:08,350 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:08,351 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:08,351 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:08,351 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:08,354 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:08,538 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170108_statistics.json
+2025-10-10 17:01:08,538 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170108.csv
+2025-10-10 17:01:08,538 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:08,538 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:08,539 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:08,575 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:08,575 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:08,576 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:08,576 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:08,577 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:08,577 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:08,580 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:08,588 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170108.h5
+2025-10-10 17:01:08,588 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:08,589 - main - INFO - Data export completed successfully
+2025-10-10 17:01:08,599 - main - INFO - Starting data export...
+2025-10-10 17:01:08,599 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:08,601 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:08,635 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:08,636 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:08,636 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:08,637 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:08,637 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:08,638 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:08,640 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:08,774 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170108_statistics.json
+2025-10-10 17:01:08,774 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170108.csv
+2025-10-10 17:01:08,774 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:08,774 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:08,775 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:08,803 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:08,803 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:08,804 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:08,804 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:08,805 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:08,805 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:08,808 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:08,816 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170108.h5
+2025-10-10 17:01:08,816 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:08,816 - main - INFO - Data export completed successfully
+2025-10-10 17:01:08,827 - main - INFO - Starting data export...
+2025-10-10 17:01:08,828 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:08,829 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:08,868 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:08,869 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:08,870 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:08,870 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:08,871 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:08,872 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:08,874 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,003 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170108_statistics.json
+2025-10-10 17:01:09,003 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170108.csv
+2025-10-10 17:01:09,003 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:09,004 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:09,004 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,036 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,036 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,037 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,037 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,037 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,038 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,040 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,048 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170109.h5
+2025-10-10 17:01:09,048 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:09,049 - main - INFO - Data export completed successfully
+2025-10-10 17:01:09,059 - main - INFO - Starting data export...
+2025-10-10 17:01:09,059 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:09,061 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,097 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,098 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,099 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,100 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,101 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,101 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,104 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,244 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170109_statistics.json
+2025-10-10 17:01:09,244 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170109.csv
+2025-10-10 17:01:09,244 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:09,244 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:09,245 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,280 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,281 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,281 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,282 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,282 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,283 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,285 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,294 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170109.h5
+2025-10-10 17:01:09,294 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:09,294 - main - INFO - Data export completed successfully
+2025-10-10 17:01:09,305 - main - INFO - Starting data export...
+2025-10-10 17:01:09,305 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:09,306 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,338 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,338 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,339 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,339 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,340 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,340 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,342 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,489 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170109_statistics.json
+2025-10-10 17:01:09,489 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170109.csv
+2025-10-10 17:01:09,489 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:09,489 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:09,490 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,523 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,524 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,524 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,525 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,525 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,525 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,528 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,536 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170109.h5
+2025-10-10 17:01:09,537 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:09,537 - main - INFO - Data export completed successfully
+2025-10-10 17:01:09,548 - main - INFO - Starting data export...
+2025-10-10 17:01:09,548 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:09,549 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,587 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,588 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,588 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,589 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,589 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,589 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,592 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,729 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170109_statistics.json
+2025-10-10 17:01:09,729 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170109.csv
+2025-10-10 17:01:09,729 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:09,729 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:09,730 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,757 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,758 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,758 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,758 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,759 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,759 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,761 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,769 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170109.h5
+2025-10-10 17:01:09,770 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:09,770 - main - INFO - Data export completed successfully
+2025-10-10 17:01:09,780 - main - INFO - Starting data export...
+2025-10-10 17:01:09,781 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:09,782 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,817 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,817 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,818 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,819 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,819 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,820 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,822 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:09,955 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170109_statistics.json
+2025-10-10 17:01:09,955 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170109.csv
+2025-10-10 17:01:09,955 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:09,955 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:09,956 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:09,989 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:09,990 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:09,990 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:09,990 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:09,991 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:09,991 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:09,994 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:10,002 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170109.h5
+2025-10-10 17:01:10,002 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:10,002 - main - INFO - Data export completed successfully
+2025-10-10 17:01:10,013 - main - INFO - Starting data export...
+2025-10-10 17:01:10,014 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:10,016 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,052 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,054 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,054 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,055 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,055 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,055 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,058 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:10,208 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170110_statistics.json
+2025-10-10 17:01:10,209 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170110.csv
+2025-10-10 17:01:10,209 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:10,209 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:10,210 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,244 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,244 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,244 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,245 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,245 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,246 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,248 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:10,256 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170110.h5
+2025-10-10 17:01:10,256 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:10,256 - main - INFO - Data export completed successfully
+2025-10-10 17:01:10,267 - main - INFO - Starting data export...
+2025-10-10 17:01:10,268 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:10,269 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,302 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,303 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,303 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,304 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,305 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,305 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,308 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:10,443 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170110_statistics.json
+2025-10-10 17:01:10,443 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170110.csv
+2025-10-10 17:01:10,444 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:10,444 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:10,445 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,478 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,479 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,479 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,480 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,480 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,480 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,483 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:10,491 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170110.h5
+2025-10-10 17:01:10,491 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:10,492 - main - INFO - Data export completed successfully
+2025-10-10 17:01:10,502 - main - INFO - Starting data export...
+2025-10-10 17:01:10,502 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:10,504 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,539 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,540 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,541 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,541 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,542 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,542 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,545 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:10,674 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170110_statistics.json
+2025-10-10 17:01:10,674 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170110.csv
+2025-10-10 17:01:10,675 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:10,675 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:10,676 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,710 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,710 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,711 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,711 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,712 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,712 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,714 - data_exporter - INFO - Combined data: 2013 records from 2 files
+2025-10-10 17:01:10,723 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170110.h5
+2025-10-10 17:01:10,723 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:10,723 - main - INFO - Data export completed successfully
+2025-10-10 17:01:10,734 - main - INFO - Starting data export...
+2025-10-10 17:01:10,735 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:10,735 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,758 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,759 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,759 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,760 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,760 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,760 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,761 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:10,889 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170110_statistics.json
+2025-10-10 17:01:10,890 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170110.csv
+2025-10-10 17:01:10,890 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:10,890 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:10,891 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,917 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,917 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,918 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,918 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,919 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,919 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,920 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:10,928 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170110.h5
+2025-10-10 17:01:10,928 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:10,929 - main - INFO - Data export completed successfully
+2025-10-10 17:01:10,942 - main - INFO - Starting data export...
+2025-10-10 17:01:10,942 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:10,943 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:10,974 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:10,976 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:10,976 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:10,977 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:10,977 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:10,978 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:10,981 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,111 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170110_statistics.json
+2025-10-10 17:01:11,111 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170110.csv
+2025-10-10 17:01:11,111 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:11,111 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:11,112 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,139 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,139 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,140 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,140 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,141 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,141 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,142 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,152 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170111.h5
+2025-10-10 17:01:11,152 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:11,152 - main - INFO - Data export completed successfully
+2025-10-10 17:01:11,162 - main - INFO - Starting data export...
+2025-10-10 17:01:11,163 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:11,164 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,193 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,194 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,195 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,195 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,196 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,197 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,199 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,307 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170111_statistics.json
+2025-10-10 17:01:11,307 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170111.csv
+2025-10-10 17:01:11,307 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:11,307 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:11,308 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,330 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,331 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,331 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,331 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,332 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,332 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,333 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,341 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170111.h5
+2025-10-10 17:01:11,341 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:11,342 - main - INFO - Data export completed successfully
+2025-10-10 17:01:11,352 - main - INFO - Starting data export...
+2025-10-10 17:01:11,353 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:11,354 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,381 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,381 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,382 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,382 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,382 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,383 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,384 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,496 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170111_statistics.json
+2025-10-10 17:01:11,496 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170111.csv
+2025-10-10 17:01:11,497 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:11,497 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:11,498 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,519 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,519 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,520 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,520 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,521 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,521 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,522 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,530 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170111.h5
+2025-10-10 17:01:11,531 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:11,531 - main - INFO - Data export completed successfully
+2025-10-10 17:01:11,542 - main - INFO - Starting data export...
+2025-10-10 17:01:11,542 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:11,543 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,574 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,574 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,575 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,575 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,575 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,576 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,577 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,697 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170111_statistics.json
+2025-10-10 17:01:11,698 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170111.csv
+2025-10-10 17:01:11,698 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:11,698 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:11,699 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,727 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,728 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,729 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,729 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,730 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,730 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,732 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,740 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170111.h5
+2025-10-10 17:01:11,741 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:11,741 - main - INFO - Data export completed successfully
+2025-10-10 17:01:11,752 - main - INFO - Starting data export...
+2025-10-10 17:01:11,753 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:11,754 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,781 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,782 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,783 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,783 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,784 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,785 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,786 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,913 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170111_statistics.json
+2025-10-10 17:01:11,914 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170111.csv
+2025-10-10 17:01:11,914 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:11,914 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:11,915 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:11,949 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:11,949 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:11,950 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:11,950 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:11,950 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:11,951 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:11,952 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:11,961 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170111.h5
+2025-10-10 17:01:11,961 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:11,961 - main - INFO - Data export completed successfully
+2025-10-10 17:01:11,972 - main - INFO - Starting data export...
+2025-10-10 17:01:11,972 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:11,974 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,016 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,016 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,017 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,017 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,017 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,018 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,019 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:12,139 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170112_statistics.json
+2025-10-10 17:01:12,139 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170112.csv
+2025-10-10 17:01:12,139 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:12,139 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:12,140 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,171 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,171 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,172 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,172 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,173 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,173 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,174 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:12,186 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170112.h5
+2025-10-10 17:01:12,186 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:12,186 - main - INFO - Data export completed successfully
+2025-10-10 17:01:12,199 - main - INFO - Starting data export...
+2025-10-10 17:01:12,199 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:12,200 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,232 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,233 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,233 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,234 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,234 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,235 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,236 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:12,376 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170112_statistics.json
+2025-10-10 17:01:12,377 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170112.csv
+2025-10-10 17:01:12,377 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:12,377 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:12,378 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,407 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,407 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,408 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,409 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,409 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,410 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,411 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:12,425 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170112.h5
+2025-10-10 17:01:12,426 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:12,426 - main - INFO - Data export completed successfully
+2025-10-10 17:01:12,437 - main - INFO - Starting data export...
+2025-10-10 17:01:12,438 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:12,439 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,503 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,503 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,504 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,504 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,505 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,505 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,513 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:12,662 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170112_statistics.json
+2025-10-10 17:01:12,662 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170112.csv
+2025-10-10 17:01:12,663 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:12,663 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:12,664 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,690 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,691 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,691 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,692 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,692 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,693 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,694 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:12,706 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170112.h5
+2025-10-10 17:01:12,706 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:12,706 - main - INFO - Data export completed successfully
+2025-10-10 17:01:12,717 - main - INFO - Starting data export...
+2025-10-10 17:01:12,718 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:12,719 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,750 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,750 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,751 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,751 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,752 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,752 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,754 - data_exporter - INFO - Combined data: 1009 records from 1 files
+2025-10-10 17:01:12,867 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170112_statistics.json
+2025-10-10 17:01:12,867 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170112.csv
+2025-10-10 17:01:12,867 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:12,867 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:12,868 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,903 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,903 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,904 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,904 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,905 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,905 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,907 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:12,916 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170112.h5
+2025-10-10 17:01:12,916 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:12,916 - main - INFO - Data export completed successfully
+2025-10-10 17:01:12,929 - main - INFO - Starting data export...
+2025-10-10 17:01:12,930 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:12,931 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:12,967 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:12,967 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:12,968 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:12,968 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:12,969 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:12,969 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:12,971 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,111 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170112_statistics.json
+2025-10-10 17:01:13,112 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170112.csv
+2025-10-10 17:01:13,112 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:13,112 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:13,113 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,150 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,150 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,150 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,151 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,151 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,152 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,154 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,163 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170113.h5
+2025-10-10 17:01:13,163 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:13,164 - main - INFO - Data export completed successfully
+2025-10-10 17:01:13,174 - main - INFO - Starting data export...
+2025-10-10 17:01:13,175 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:13,176 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,212 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,213 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,213 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,213 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,214 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,214 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,216 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,349 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170113_statistics.json
+2025-10-10 17:01:13,349 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170113.csv
+2025-10-10 17:01:13,349 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:13,349 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:13,350 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,387 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,388 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,388 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,388 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,389 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,389 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,391 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,400 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170113.h5
+2025-10-10 17:01:13,400 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:13,400 - main - INFO - Data export completed successfully
+2025-10-10 17:01:13,411 - main - INFO - Starting data export...
+2025-10-10 17:01:13,411 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:13,412 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,445 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,445 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,446 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,446 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,447 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,447 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,449 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,592 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170113_statistics.json
+2025-10-10 17:01:13,592 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170113.csv
+2025-10-10 17:01:13,592 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:13,592 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:13,593 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,626 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,627 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,627 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,627 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,628 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,628 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,630 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,639 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170113.h5
+2025-10-10 17:01:13,639 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:13,639 - main - INFO - Data export completed successfully
+2025-10-10 17:01:13,650 - main - INFO - Starting data export...
+2025-10-10 17:01:13,650 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:13,651 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,687 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,688 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,688 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,689 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,689 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,689 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,692 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,819 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170113_statistics.json
+2025-10-10 17:01:13,820 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170113.csv
+2025-10-10 17:01:13,820 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:13,820 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:13,821 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,854 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,854 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,855 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,855 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,856 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,856 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,858 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:13,867 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170113.h5
+2025-10-10 17:01:13,867 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:13,867 - main - INFO - Data export completed successfully
+2025-10-10 17:01:13,878 - main - INFO - Starting data export...
+2025-10-10 17:01:13,878 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:13,880 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:13,919 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:13,919 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:13,920 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:13,920 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:13,921 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:13,921 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:13,923 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,057 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170113_statistics.json
+2025-10-10 17:01:14,057 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170113.csv
+2025-10-10 17:01:14,057 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:14,057 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:14,058 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,090 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,091 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,091 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,091 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,092 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,092 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,095 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,103 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170114.h5
+2025-10-10 17:01:14,103 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:14,103 - main - INFO - Data export completed successfully
+2025-10-10 17:01:14,114 - main - INFO - Starting data export...
+2025-10-10 17:01:14,114 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:14,115 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,153 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,153 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,154 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,154 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,155 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,155 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,158 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,292 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170114_statistics.json
+2025-10-10 17:01:14,292 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170114.csv
+2025-10-10 17:01:14,292 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:14,292 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:14,293 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,326 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,326 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,327 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,327 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,328 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,328 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,330 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,338 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170114.h5
+2025-10-10 17:01:14,339 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:14,339 - main - INFO - Data export completed successfully
+2025-10-10 17:01:14,349 - main - INFO - Starting data export...
+2025-10-10 17:01:14,350 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:14,351 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,382 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,383 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,383 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,383 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,384 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,384 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,386 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,524 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170114_statistics.json
+2025-10-10 17:01:14,524 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170114.csv
+2025-10-10 17:01:14,524 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:14,524 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:14,525 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,556 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,557 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,557 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,557 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,558 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,558 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,560 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,571 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170114.h5
+2025-10-10 17:01:14,571 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:14,571 - main - INFO - Data export completed successfully
+2025-10-10 17:01:14,582 - main - INFO - Starting data export...
+2025-10-10 17:01:14,582 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:14,583 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,626 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,627 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,627 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,627 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,628 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,630 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,633 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,763 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170114_statistics.json
+2025-10-10 17:01:14,763 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170114.csv
+2025-10-10 17:01:14,763 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:14,763 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:14,764 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,799 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,800 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,800 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,801 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,801 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,801 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,803 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,812 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170114.h5
+2025-10-10 17:01:14,812 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:14,812 - main - INFO - Data export completed successfully
+2025-10-10 17:01:14,823 - main - INFO - Starting data export...
+2025-10-10 17:01:14,824 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:14,825 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:14,861 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:14,861 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:14,862 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:14,862 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:14,863 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:14,863 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:14,865 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:14,998 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170114_statistics.json
+2025-10-10 17:01:14,998 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170114.csv
+2025-10-10 17:01:14,998 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:14,998 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:14,999 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:15,033 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:15,034 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:15,034 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:15,035 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:15,035 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:15,035 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:15,037 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:15,046 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170115.h5
+2025-10-10 17:01:15,046 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:15,046 - main - INFO - Data export completed successfully
+2025-10-10 17:01:15,057 - main - INFO - Starting data export...
+2025-10-10 17:01:15,057 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:15,058 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:15,093 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:15,094 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:15,094 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:15,095 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:15,095 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:15,095 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:15,098 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:15,229 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170115_statistics.json
+2025-10-10 17:01:15,229 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170115.csv
+2025-10-10 17:01:15,229 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:15,229 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:15,230 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:15,263 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:15,264 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:15,264 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:15,265 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:15,265 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:15,265 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:15,268 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:15,276 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170115.h5
+2025-10-10 17:01:15,276 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:15,277 - main - INFO - Data export completed successfully
+2025-10-10 17:01:15,287 - main - INFO - Starting data export...
+2025-10-10 17:01:15,287 - data_exporter - INFO - Starting export to csv format
+2025-10-10 17:01:15,289 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:15,323 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:15,323 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:15,324 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:15,324 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:15,325 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:15,325 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:15,327 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:15,498 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251010_170115_statistics.json
+2025-10-10 17:01:15,499 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251010_170115.csv
+2025-10-10 17:01:15,499 - data_exporter - INFO - Export to csv completed successfully
+2025-10-10 17:01:15,499 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-10 17:01:15,500 - data_exporter - INFO - Found 13 data files to process
+2025-10-10 17:01:15,559 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165314.json: Expected object or value
+2025-10-10 17:01:15,561 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165156.json: Expected object or value
+2025-10-10 17:01:15,562 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165215.json: Expected object or value
+2025-10-10 17:01:15,563 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_170038.json: Expected object or value
+2025-10-10 17:01:15,564 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165601.json: Expected object or value
+2025-10-10 17:01:15,565 - data_exporter - WARNING - JSON/JSONL parse error, skipping data/raw/session_metadata_20251010_165455.json: Expected object or value
+2025-10-10 17:01:15,569 - data_exporter - INFO - Combined data: 2036 records from 2 files
+2025-10-10 17:01:15,584 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251010_170115.h5
+2025-10-10 17:01:15,585 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-10 17:01:15,586 - main - INFO - Data export completed successfully
+2025-10-10 17:01:15,593 - main - INFO - Stopping streaming...
+2025-10-10 17:01:15,598 - main - INFO - Cleaning up resources...
+2025-10-10 17:01:15,724 - shimmer_client - INFO - Stopped streaming
+2025-10-10 17:01:15,725 - shimmer_client - INFO - Disconnected from Shimmer3
+2025-10-10 17:01:15,725 - data_logger - INFO - Closing DataLogger...
+2025-10-10 17:01:16,289 - data_logger - INFO - DataLogger closed. Total entries logged: 1047
+2025-10-10 17:01:16,289 - main - INFO - Cleanup completed.

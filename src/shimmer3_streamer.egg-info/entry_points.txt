@@ -1,0 +1,2 @@
+[console_scripts]
+shimmer3-stream = src.main:main

@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/shimmer3_streamer.egg-info/PKG-INFO
+src/shimmer3_streamer.egg-info/SOURCES.txt
+src/shimmer3_streamer.egg-info/dependency_links.txt
+src/shimmer3_streamer.egg-info/entry_points.txt
+src/shimmer3_streamer.egg-info/requires.txt
+src/shimmer3_streamer.egg-info/top_level.txt
+src/utils/__init__.py
+src/utils/config.py
