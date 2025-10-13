@@ -82,8 +82,7 @@ class ShimmerClient:
         'SHIMMER_VERSION_RESPONSE': 0x40,
     }
     
-    def __init__(self, device_id: Optional[str] = None, port: str = '/dev/ttyUSB0', 
-                 baudrate: int = 115200, timeout: float = 5.0):
+    def __init__(self, config):
         """
         Initialize ShimmerClient
         
@@ -93,10 +92,11 @@ class ShimmerClient:
             baudrate: Communication baudrate
             timeout: Connection timeout in seconds
         """
-        self.device_id = device_id
-        self.port = port
-        self.baudrate = baudrate
-        self.timeout = timeout
+        self.config = config
+        self.device_id = config.get('device_id')
+        self.port = config.get('port', '/dev/ttyUSB0')
+        self.baud_rate = config.get('baudrate', 115200)
+        self.timeout = config.get('timeout', 5.0)
         
         self.serial_conn: Optional[serial.Serial] = None
         self.state = ShimmerState.DISCONNECTED
@@ -123,26 +123,28 @@ class ShimmerClient:
         self._lock = asyncio.Lock()
         self.bluetooth_manager = BluetoothManager()
     
-    async def connect(self) -> bool:
-        """Connect to Shimmer3 device with automatic pairing if needed"""
+    async def connect(self):
+        """Connect to Shimmer3 device with automatic RFCOMM setup"""
         try:
-            self.logger.info(f"Attempting to connect to Shimmer3 device at {self.port}")
+            self.logger.info(f"Attempting to connect to Shimmer3 device")
             
-            # Extract MAC address from port (if using Bluetooth)
-            if 'rfcomm' in self.port or len(self.port.replace(':', '')) == 12:
-                # This appears to be a Bluetooth connection
-                device_address = self.port  # Use self.port as the Bluetooth address
-                
-                self.logger.info(f"Bluetooth connection detected for device {device_address}")
-                
-                # Ensure device is paired and ready
-                if not self.bluetooth_manager.ensure_device_ready(device_address):
-                    raise ConnectionError(f"Failed to prepare Bluetooth device {device_address} for connection")
-                
-                self.logger.info(f"Bluetooth device {device_address} is ready for connection")
+            # Get device address from config
+            device_address = self.config.get('device_address', '00:06:66:B1:4D:A1')
             
-            # Proceed with existing connection logic
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+            self.logger.info(f"Preparing RFCOMM connection for device {device_address}")
+            
+            # Prepare device for RFCOMM connection (pairing + binding)
+            rfcomm_device = self.bluetooth_manager.prepare_shimmer3_connection(device_address)
+            
+            if not rfcomm_device:
+                raise ConnectionError(f"Failed to prepare RFCOMM connection for device {device_address}")
+            
+            # Update port to use the RFCOMM device
+            self.port = rfcomm_device
+            self.logger.info(f"Using RFCOMM device: {self.port}")
+            
+            # Proceed with serial connection
+            self.ser = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
             
             if not self.ser.is_open:
                 self.ser.open()
@@ -153,9 +155,9 @@ class ShimmerClient:
             await asyncio.sleep(2)
             
             # Send inquiry command to verify connection
-            if await self._send_command(self.COMMANDS['GET_INQUIRY_COMMAND']):
+            if await self.send_command('inquiry'):
                 self.logger.info("Shimmer3 device responded to inquiry command")
-                self.state = ShimmerState.CONNECTED
+                self.connected = True
                 return True
             else:
                 raise ConnectionError("Shimmer3 device did not respond to inquiry command")
@@ -166,21 +168,26 @@ class ShimmerClient:
                 self.ser.close()
             return False
     
-    async def disconnect(self) -> None:
-        """Disconnect from Shimmer3 device"""
-        async with self._lock:
-            try:
-                if self.state == ShimmerState.STREAMING:
+    async def disconnect(self):
+        """Disconnect from Shimmer3 device and cleanup RFCOMM"""
+        try:
+            if self.connected and hasattr(self, 'ser') and self.ser:
+                # Stop streaming if active
+                if hasattr(self, 'streaming') and self.streaming:
                     await self.stop_streaming()
                 
-                if self.serial_conn and self.serial_conn.is_open:
-                    self.serial_conn.close()
-                    
-                self.state = ShimmerState.DISCONNECTED
-                self.logger.info("Disconnected from Shimmer3")
-                
-            except Exception as e:
-                self.logger.error(f"Error during disconnect: {e}")
+                # Close serial connection
+                self.ser.close()
+                self.logger.info("Serial connection closed")
+            
+            # Cleanup RFCOMM bindings
+            self.bluetooth_manager.cleanup_connections()
+            
+            self.connected = False
+            self.logger.info("Shimmer3 device disconnected and cleaned up")
+            
+        except Exception as e:
+            self.logger.error(f"Error during disconnection: {e}")
     
     async def configure_sensors(self, sensors: List[str], sampling_rate: float = 51.2) -> bool:
         """
