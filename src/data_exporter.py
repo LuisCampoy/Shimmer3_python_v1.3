@@ -192,42 +192,29 @@ class DataExporter:
     
     SUPPORTED_FORMATS = ['csv', 'json', 'hdf5', 'excel', 'matlab', 'parquet']
     
-    def __init__(self, input_dir: str = 'data/raw', output_dir: str = 'data/processed'):
-        """
-        Initialize DataExporter
+    def __init__(self, input_dir: str, output_dir: str, formats: List[str] = None, 
+                 include_statistics: bool = True, compression: bool = False, config: Dict = None):
+        """Initialize DataExporter with configuration"""
+        self.input_dir = Path(input_dir)
+        self.output_dir = Path(output_dir)
+        self.formats = formats or ['csv']
+        self.include_statistics = include_statistics
+        self.compression = compression
+        self.config = config or {}
         
-        Args:
-            input_dir: Input directory containing raw data files
-            output_dir: Output directory for processed data
-        """
-        # Normalize and ensure directories
-        normalized_input = normalize_path(input_dir, 'data/raw', 'export.input_dir')
-        normalized_output = normalize_path(output_dir, 'data/processed', 'export.output_dir')
-        ensure_dir(normalized_input)
-        ensure_dir(normalized_output)
-        self.input_dir = Path(normalized_input)
-        self.output_dir = Path(normalized_output)
+        # Use consistent config access patterns
+        self.min_records_threshold = self.config.get('export.min_records_threshold', 1000) if hasattr(self.config, 'get') else 1000
+        self.quarantine_corrupted = self.config.get('export.quarantine_corrupted_files', True) if hasattr(self.config, 'get') else True
+        self.enable_background_loop = self.config.get('export.enable_background_loop', False) if hasattr(self.config, 'get') else False
         
-        # Create output directory
+        # Ensure directories exist
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        if self.quarantine_corrupted:
+            (self.output_dir / 'quarantine').mkdir(parents=True, exist_ok=True)
         
-        # Initialize processor
-        self.processor = DataProcessor()
-        
-        # Logging
+        # Initialize tracking
+        self.last_processed_files = set()
         self.logger = logging.getLogger(__name__)
-        
-        # Export statistics
-        self.export_stats = {
-            'files_processed': 0,
-            'total_records': 0,
-            'last_export': None
-        }
-        
-        self.logger.info(f"DataExporter initialized - Input: {input_dir}, Output: {output_dir}")
-        # Prevents processing the same data multiple times
-        self.last_processed_files: Set[str] = set()
-        self.last_export_time: Optional[datetime] = None
 
     async def export(self, format_type: str, export_config: Optional[ExportConfig] = None) -> bool:
         """
@@ -288,7 +275,7 @@ class DataExporter:
             return False
     
     async def _load_and_combine_data(self) -> Optional[pd.DataFrame]:
-        """Load and combine data from input files"""
+        """Load and combine data from input files with memory optimization"""
         try:
             data_frames = []
             current_files = set()
@@ -313,35 +300,83 @@ class DataExporter:
                 self.logger.info("No new data files to process")
                 return None
                 
-            self.logger.info(f"Found {len(new_files)} new/modified data files to process")
-            self.last_processed_files = current_files
+            # Process files in chunks to manage memory
+            chunk_size = 50000  # Process 50k rows at a time
+            combined_chunks = []
             
-            # Process only new files...
             for file_path in new_files:
                 try:
-                    # call sync loader (remove await)
-                    df = self._load_single_file(file_path)
-                    if df is not None and not df.empty:
-                        data_frames.append(df)
+                    self.logger.info(f"Processing file: {file_path}")
+                    
+                    if file_path.suffix == '.csv':
+                        # Read CSV in chunks
+                        for chunk in pd.read_csv(file_path, chunksize=chunk_size):
+                            combined_chunks.append(chunk)
+                            
+                            # Combine every 10 chunks to prevent memory overflow
+                            if len(combined_chunks) >= 10:
+                                combined = pd.concat(combined_chunks, ignore_index=True)
+                                combined_chunks = [combined]
+                                
+                    elif file_path.suffix == '.json':
+                        # Read JSON file
+                        with open(file_path, 'r') as f:
+                            json_data = json.load(f)
+                        if isinstance(json_data, list):
+                            df = pd.DataFrame(json_data)
+                            combined_chunks.append(df)
+                    
+                    elif file_path.suffix == '.jsonl':
+                        # Read JSONL file line by line
+                        data_list = []
+                        with open(file_path, 'r') as f:
+                            for line in f:
+                                try:
+                                    data_list.append(json.loads(line.strip()))
+                                    if len(data_list) >= chunk_size:
+                                        df = pd.DataFrame(data_list)
+                                        combined_chunks.append(df)
+                                        data_list = []
+                                except json.JSONDecodeError:
+                                    continue
+                        
+                        if data_list:  # Process remaining data
+                            df = pd.DataFrame(data_list)
+                            combined_chunks.append(df)
+                    
+                    elif file_path.suffix == '.pkl':
+                        # Read pickle file
+                        df = pd.read_pickle(file_path)
+                        combined_chunks.append(df)
+                        
                 except Exception as e:
-                    self.logger.warning(f"Failed to load {file_path}: {e}")
+                    self.logger.error(f"Error processing file {file_path}: {e}")
+                    
+                    # Quarantine corrupted files if enabled
+                    if self.quarantine_corrupted:
+                        quarantine_dir = self.output_dir / 'quarantine'
+                        quarantine_path = quarantine_dir / file_path.name
+                        try:
+                            file_path.rename(quarantine_path)
+                            self.logger.info(f"Moved corrupted file to quarantine: {quarantine_path}")
+                        except Exception as move_error:
+                            self.logger.error(f"Failed to quarantine file: {move_error}")
+                    continue
             
-            if not data_frames:
-                self.logger.error("No valid data could be loaded")
+            # Update processed files tracking
+            self.last_processed_files = current_files
+            
+            # Combine all chunks
+            if combined_chunks:
+                final_data = pd.concat(combined_chunks, ignore_index=True)
+                self.logger.info(f"Combined data shape: {final_data.shape}")
+                return final_data
+            else:
+                self.logger.warning("No valid data found in input files")
                 return None
-            
-            # Combine all data
-            combined_df = pd.concat(data_frames, ignore_index=True)
-            
-            # Sort by timestamp
-            if 'timestamp' in combined_df.columns:
-                combined_df = combined_df.sort_values('timestamp').reset_index(drop=True)
-            
-            self.logger.info(f"Combined data: {len(combined_df)} records from {len(data_frames)} files")
-            return combined_df
-            
+                
         except Exception as e:
-            self.logger.error(f"Error loading data: {e}")
+            self.logger.error(f"Error in data loading: {e}")
             return None
     
     def _is_recent_or_empty(self, file_path: Path) -> bool:
