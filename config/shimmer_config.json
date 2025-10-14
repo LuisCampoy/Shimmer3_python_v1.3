@@ -2,7 +2,10 @@
   "shimmer": {
     "port": "/dev/rfcomm0",
     "device_address": "00:06:66:B1:4D:A1",
-    "device_id": "shimmer3_001",
+    "manual_rfcomm": true,
+    "passive_connect": true,
+    "keep_open_on_handshake_failure": true,
+    "verbose_serial": true,
     "baud_rate": 115200,
     "timeout": 5,
     "sampling_rate": 51.2,
@@ -10,11 +13,7 @@
       "accelerometer",
       "gyroscope", 
       "magnetometer"
-    ],
-    "auto_pair": true,
-    "max_pair_attempts": 3,
-    "manual_rfcomm": true,
-    "keep_open_on_handshake_failure": true
+    ]
   },
   "data": {
     "output_directory": "data/raw",

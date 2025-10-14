@@ -104,7 +104,7 @@ class ShimmerStreamer:
             self.logger.error(f"Failed to initialize components: {e}")
             raise
 
-    async def connect_shimmer(self) -> None:
+    async def connect_shimmer(self) -> bool:
         '''
         Connect to the Shimmer3 device.
         Args:
@@ -114,12 +114,13 @@ class ShimmerStreamer:
         '''
         try:
             if not self.shimmer_client:
-                raise RuntimeError("Shimmer client not initialized")
+                self.logger.error("Shimmer client not initialized")
+                return False
 
             connected = await self.shimmer_client.connect()
             if not connected:
-                self.logger.error("Could not connect to Shimmer3. Aborting initialization.")
-                raise RuntimeError("Shimmer3 connection failed")
+                self.logger.error("Could not connect to Shimmer3.")
+                return False
 
             # Configure IMU sensors
             if not isinstance(self.config, dict):
@@ -130,14 +131,15 @@ class ShimmerStreamer:
 
             configured = await self.shimmer_client.configure_sensors(sensors, sampling_rate)
             if not configured:
-                self.logger.error("Could not configure Shimmer3 sensors. Aborting initialization.")
-                raise RuntimeError("Shimmer3 sensor configuration failed")
+                self.logger.error("Could not configure Shimmer3 sensors.")
+                return False
 
             self.logger.info(f'Shimmer3 connected and configured with sensors: {sensors}')
+            return True
 
         except Exception as e:
             self.logger.error(f'Failed to connect/configure Shimmer3: {e}')
-            raise
+            return False
     
     async def start_streaming(self) -> None:
         '''

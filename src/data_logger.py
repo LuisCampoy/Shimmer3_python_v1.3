@@ -79,10 +79,13 @@ class DataLogger:
         self.buffer_lock = threading.Lock()
         self.current_file = None
         self.current_writer = None
+        self.current_file_handle = None  # Ensure attribute exists before use
         self.file_counter = 0
         self.session_id = datetime.now().strftime('%Y%m%d_%H%M%S')
         self.session_start_time = datetime.now()
         self.logging_active = False
+        self.last_flush_time = time.time()  # Initialize flush timer
+        self.file_entries_written = 0
         
         # Statistics tracking
         self.stats = {
@@ -205,6 +208,7 @@ class DataLogger:
             
             # Update stats
             self.stats['total_entries'] += 1
+            self.stats['entries_since_last_export'] += 1
             self.stats['last_entry_time'] = datetime.now()
             
             # Check if buffer is full or auto-flush needed
