@@ -12,7 +12,9 @@
       "magnetometer"
     ],
     "auto_pair": true,
-    "max_pair_attempts": 3
+    "max_pair_attempts": 3,
+    "manual_rfcomm": true,
+    "keep_open_on_handshake_failure": true
   },
   "data": {
     "output_directory": "data/raw",

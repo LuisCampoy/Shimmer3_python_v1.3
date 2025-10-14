@@ -246,6 +246,11 @@ sudo rfcomm bind 0 00:06:66:B1:4D:A1 1
 
 rfcomm show
 
+Ensure you’ve manually bound the device first:
+sudo rfcomm release 0 2>/dev/null || true
+sudo rfcomm bind 0 00:06:66:B1:4D:A1 1
+rfcomm
+
 sudo rfcomm show 0
 Good! Now the device is in "clean" state. Let me check if we can access it:
 
