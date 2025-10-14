@@ -1,0 +1,19 @@
+{
+  "session_id": "20251014_171751",
+  "session_start": "2025-10-14T17:17:51.539057",
+  "file_format": "csv",
+  "compression": false,
+  "buffer_size": 1000,
+  "max_file_size_mb": 100.0,
+  "output_directory": "data/raw",
+  "stats": {
+    "total_entries": 1302,
+    "entries_since_last_export": 302,
+    "total_exports": 1,
+    "files_created": 1,
+    "bytes_written": 104160,
+    "session_start": "2025-10-14T17:17:51.539057",
+    "last_entry_time": "2025-10-14T17:18:24.293736",
+    "last_export_time": "2025-10-14T17:18:21.084378"
+  }
+}

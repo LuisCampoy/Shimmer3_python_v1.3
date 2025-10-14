@@ -6,7 +6,9 @@ import sys
 import os
 import asyncio
 import argparse
+import logging
 from pathlib import Path
+from datetime import datetime
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / 'src'))
@@ -15,6 +17,24 @@ from main import ShimmerStreamer
 
 async def main():
     """Main entry point"""
+    # Setup logging
+    log_dir = Path('logs')
+    log_dir.mkdir(exist_ok=True)
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_file = log_dir / f'shimmer3_streamer_{timestamp}.log'
+    
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(log_file),
+            logging.StreamHandler()
+        ]
+    )
+    
+    logger = logging.getLogger(__name__)
+    logger.info(f"Shimmer3 Streamer starting - log file: {log_file}")
+    
     parser = argparse.ArgumentParser(description='Shimmer3 IMU Data Streaming Tool')
     parser.add_argument('-c', '--config', default='config/shimmer_config.json',
                        help='Path to configuration file')
@@ -77,7 +97,7 @@ async def main():
             if 'shimmer' not in app.config:
                 app.config['shimmer'] = {}
             app.config['shimmer']['passive_connect'] = False
-            print("Passive connect disabled via --force-active")
+            print(f"Passive connect disabled via --force-active (now: {app.config['shimmer'].get('passive_connect')})")
         
         # Initialize components
         app.initialize_components()

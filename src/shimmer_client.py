@@ -249,23 +249,23 @@ class ShimmerClient:
         try:
             if self.preserve_connection:
                 self.logger.info("preserve_connection=True; skipping disconnect to keep RFCOMM binding and serial open")
+                # Only stop streaming, do not close serial port or cleanup RFCOMM
+                if self.connected and self.serial_conn:
+                    if hasattr(self, 'streaming') and self.streaming:
+                        await self.stop_streaming()
                 return
             if self.connected and self.serial_conn:
                 # Stop streaming if active
                 if hasattr(self, 'streaming') and self.streaming:
                     await self.stop_streaming()
-                
                 # Close serial connection
                 self.serial_conn.close()
                 self.logger.info("Serial connection closed")
-            
             # Cleanup RFCOMM bindings
             self.bluetooth_manager.cleanup_connections()
-            
             self.connected = False
             self.state = ShimmerState.DISCONNECTED
             self.logger.info("Shimmer3 device disconnected and cleaned up")
-            
         except Exception as e:
             self.logger.error(f"Error during disconnection: {e}")
 
@@ -345,14 +345,19 @@ class ShimmerClient:
                     self.logger.warning(f"Unknown sensor: {sensor_name}")
             
             # Set sampling rate
-            await self._set_sampling_rate(sampling_rate)
+            print(f"Setting sampling rate to {sampling_rate} Hz...")
+            rate_ok = await self._set_sampling_rate(sampling_rate)
+            print(f"Sampling rate set: {rate_ok}")
             
             # Set enabled sensors
-            await self._set_sensors(sensor_bitmap)
+            print(f"Setting sensors bitmap: 0x{sensor_bitmap:X}...")
+            sensors_ok = await self._set_sensors(sensor_bitmap)
+            print(f"Sensors set: {sensors_ok}")
             
             # Calculate packet size
             self._calculate_packet_size()
             
+            print(f"Configuration complete - sensors: {sensors}, rate: {sampling_rate} Hz, packet_size: {self.packet_size}")
             self.logger.info(f"Configured sensors: {sensors}, sampling rate: {sampling_rate} Hz")
             return True
             
@@ -406,20 +411,28 @@ class ShimmerClient:
         Returns:
             bool: True if streaming started successfully
         """
+        print(f"start_streaming called, current state: {self.state}")
         if self.state != ShimmerState.CONNECTED:
-            self.logger.error("Device not connected")
+            print(f"ERROR: Device not in CONNECTED state (state={self.state})")
+            self.logger.error(f"Device not connected (state={self.state})")
             return False
         
         try:
             # Send start streaming command (raw send then single ACK wait)
-            if await self._send_raw_command(self.COMMANDS['START_STREAMING_COMMAND']):
+            print(f"Sending START_STREAMING command (0x{self.COMMANDS['START_STREAMING_COMMAND']:02X})...")
+            self.logger.info(f"Sending START_STREAMING command (0x{self.COMMANDS['START_STREAMING_COMMAND']:02X})...")
+            ack = await self._send_raw_command(self.COMMANDS['START_STREAMING_COMMAND'])
+            print(f"ACK received: {ack}")
+            if ack:
                 self.state = ShimmerState.STREAMING
                 self.packet_counter = 0
                 self.data_buffer.clear()
+                print("Started streaming (ACK received)")
                 self.logger.info("Started streaming (ACK received)")
                 return True
             
-            self.logger.error("Failed to start streaming")
+            print("Failed to start streaming (no ACK received)")
+            self.logger.error("Failed to start streaming (no ACK received)")
             return False
             
         except Exception as e:

@@ -157,25 +157,55 @@ class ShimmerStreamer:
             self.logger.info('Starting data streaming...')
 
             # start streaming
-            await self.shimmer_client.start_streaming()
+            print("Attempting to start streaming...")
+            stream_started = await self.shimmer_client.start_streaming()
+            print(f"Stream started result: {stream_started}")
+            if not stream_started:
+                print("ERROR: Failed to start streaming - device may not be responding")
+                self.logger.error("Failed to start streaming - device may not be responding")
+                return
+
+            # Wait a moment and check if data is arriving
+            await asyncio.sleep(0.5)
+            if self.shimmer_client.serial_conn and self.shimmer_client.serial_conn.in_waiting > 0:
+                self.logger.info(f"Data is arriving: {self.shimmer_client.serial_conn.in_waiting} bytes in buffer")
+            else:
+                self.logger.warning("No data in serial buffer after start_streaming - device may not be sending")
 
             # Main streaming loop
+            packet_count = 0
+            no_data_count = 0
             while self.running:
                 try:
                     # Get data from Shimmer
                     data_packet = await self.shimmer_client.get_data()
 
                     if data_packet:
+                        packet_count += 1
+                        no_data_count = 0  # Reset no-data counter
+                        if packet_count == 1:
+                            self.logger.info(f"First packet received! Streaming is working.")
+                        if packet_count % 100 == 0:
+                            self.logger.info(f"Received {packet_count} packets")
                         # log raw data
                         await self.data_logger.log_data(data_packet)
-
+                        
                         # Optional: Real-time processing/display
                         if isinstance(self.config, dict) and self.config.get('display.real_time', False):
                             self._display_data(data_packet)
+                    else:
+                        no_data_count += 1
+                        if no_data_count == 100:
+                            self.logger.warning(f"No packets received in {no_data_count} iterations")
+                        elif no_data_count % 1000 == 0:
+                            buf_len = len(self.shimmer_client.data_buffer) if self.shimmer_client else 0
+                            self.logger.warning(f"Still no packets after {no_data_count} iterations (buffer: {buf_len} bytes)")
 
                     # Check for export trigger
                     try:
                         if self.data_logger.should_export():
+                            stats = self.data_logger.get_stats()
+                            self.logger.debug(f"Export triggered: {stats['entries_since_last_export']} entries logged")
                             await self.export_data()
                     except Exception as e:
                         self.logger.error(f"should_export failed: {e}")
@@ -227,7 +257,8 @@ class ShimmerStreamer:
                 await self.data_exporter.export(format_type)
 
             # Mark export as completed in data logger to reset export conditions
-            self.data_logger.mark_export_completed()
+            if self.data_logger is not None:
+                self.data_logger.mark_export_completed()
 
             self.logger.info('Data export completed successfully')
 
@@ -266,7 +297,14 @@ class ShimmerStreamer:
         self.logger.info('Cleaning up resources...')
 
         if self.shimmer_client:
-            await self.shimmer_client.disconnect()
+            # Check if we should preserve the connection
+            if hasattr(self.shimmer_client, 'preserve_connection') and self.shimmer_client.preserve_connection:
+                self.logger.info("Skipping disconnect - preserve_connection is enabled")
+                # Just stop streaming but keep connection open
+                if hasattr(self.shimmer_client, 'streaming') and self.shimmer_client.streaming:
+                    await self.shimmer_client.stop_streaming()
+            else:
+                await self.shimmer_client.disconnect()
 
         if self.data_logger:
             await self.data_logger.close()

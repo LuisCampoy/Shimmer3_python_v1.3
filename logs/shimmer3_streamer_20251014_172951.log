@@ -1,0 +1,146 @@
+2025-10-14 17:29:51,488 - __main__ - INFO - Shimmer3 Streamer starting - log file: logs/shimmer3_streamer_20251014_172951.log
+2025-10-14 17:29:51,489 - main - INFO - Configuration loaded from config/shimmer_config.json
+2025-10-14 17:29:51,489 - shimmer_client - INFO - ShimmerClient initialized for device shimmer3_default
+2025-10-14 17:29:51,490 - main - INFO - All components initialized successfully
+2025-10-14 17:29:51,490 - shimmer_client - INFO - Attempting to connect to Shimmer3 device
+2025-10-14 17:29:51,490 - shimmer_client - INFO - Manual RFCOMM mode enabled (manual_rfcomm=True); skipping bluetooth preparation
+2025-10-14 17:29:51,492 - shimmer_client - INFO - Serial connection established to /dev/rfcomm0
+2025-10-14 17:29:52,493 - shimmer_client - WARNING - Passive connect enabled: skipping Shimmer inquiry/version handshake.
+2025-10-14 17:29:54,510 - shimmer_client - INFO - Passive connect captured 22 bytes initial data
+2025-10-14 17:29:58,715 - shimmer_client - INFO - Configured sensors: ['accelerometer', 'gyroscope', 'magnetometer'], sampling rate: 51.2 Hz
+2025-10-14 17:29:58,716 - main - INFO - Shimmer3 connected and configured with sensors: ['accelerometer', 'gyroscope', 'magnetometer']
+2025-10-14 17:29:58,716 - main - INFO - Starting data streaming...
+2025-10-14 17:29:58,717 - shimmer_client - INFO - Sending START_STREAMING command (0x07)...
+2025-10-14 17:29:58,748 - shimmer_client - INFO - Started streaming (ACK received)
+2025-10-14 17:29:59,250 - main - WARNING - No data in serial buffer after start_streaming - device may not be sending
+2025-10-14 17:30:00,212 - main - INFO - First packet received! Streaming is working.
+2025-10-14 17:30:02,157 - main - INFO - Received 100 packets
+2025-10-14 17:30:04,110 - main - INFO - Received 200 packets
+2025-10-14 17:30:06,048 - main - INFO - Received 300 packets
+2025-10-14 17:30:08,007 - main - INFO - Received 400 packets
+2025-10-14 17:30:09,966 - main - INFO - Received 500 packets
+2025-10-14 17:30:11,906 - main - INFO - Received 600 packets
+2025-10-14 17:30:13,867 - main - INFO - Received 700 packets
+2025-10-14 17:30:15,818 - main - INFO - Received 800 packets
+2025-10-14 17:30:17,779 - main - INFO - Received 900 packets
+2025-10-14 17:30:19,734 - main - INFO - Received 1000 packets
+2025-10-14 17:30:19,744 - data_logger - INFO - Created new log file: data/raw/shimmer3_data_20251014_172951_001_20251014_173019.csv
+2025-10-14 17:30:19,745 - data_logger - INFO - Rotated to new file: data/raw/shimmer3_data_20251014_172951_001_20251014_173019.csv
+2025-10-14 17:30:19,754 - main - INFO - Starting data export...
+2025-10-14 17:30:19,754 - data_exporter - INFO - Starting export to csv format
+2025-10-14 17:30:19,768 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_171320_001_20251014_171350.csv
+2025-10-14 17:30:19,804 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251012_092536_001_20251012_092536.csv
+2025-10-14 17:30:19,808 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_144333_001_20251014_144401.csv
+2025-10-14 17:30:19,838 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251011_172806_001_20251011_172806.csv
+2025-10-14 17:30:19,842 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_134319_001_20251013_134319.csv
+2025-10-14 17:30:19,846 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_155430_001_20251013_155430.csv
+2025-10-14 17:30:19,849 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_170936_001_20251014_171006.csv
+2025-10-14 17:30:19,863 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251012_092809_001_20251012_092809.csv
+2025-10-14 17:30:19,867 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_155249_001_20251013_155249.csv
+2025-10-14 17:30:19,870 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251010_170038_001_20251010_170038.csv
+2025-10-14 17:30:19,884 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_160725_001_20251014_160753.csv
+2025-10-14 17:30:19,898 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_163924_001_20251013_163924.csv
+2025-10-14 17:30:19,901 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251012_110524_001_20251012_110524.csv
+2025-10-14 17:30:19,905 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251012_111456_001_20251012_111456.csv
+2025-10-14 17:30:19,908 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251011_172413_001_20251011_172413.csv
+2025-10-14 17:30:19,912 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_134432_001_20251013_134432.csv
+2025-10-14 17:30:19,915 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_155445_001_20251013_155445.csv
+2025-10-14 17:30:19,918 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251010_125347_001_20251010_125347.csv
+2025-10-14 17:30:19,929 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_171506_001_20251014_171536.csv
+2025-10-14 17:30:19,944 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251012_111929_001_20251012_111929.csv
+2025-10-14 17:30:19,962 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251012_110506_001_20251012_110506.csv
+2025-10-14 17:30:19,965 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251010_165455_001_20251010_165455.csv
+2025-10-14 17:30:19,968 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251010_165314_001_20251010_165314.csv
+2025-10-14 17:30:19,972 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_131843_001_20251014_131911.csv
+2025-10-14 17:30:20,222 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_131928_001_20251014_131958.csv
+2025-10-14 17:30:20,231 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_170410_001_20251014_170438.csv
+2025-10-14 17:30:20,254 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251012_111708_001_20251012_111708.csv
+2025-10-14 17:30:20,266 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_171751_001_20251014_171817.csv
+2025-10-14 17:30:20,275 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_134930_001_20251013_134930.csv
+2025-10-14 17:30:20,279 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_143201_001_20251014_143230.csv
+2025-10-14 17:30:20,293 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251010_165156_001_20251010_165156.csv
+2025-10-14 17:30:20,297 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_154118_001_20251013_154118.csv
+2025-10-14 17:30:20,300 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_154428_001_20251014_154457.csv
+2025-10-14 17:30:20,313 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_155257_001_20251013_155257.csv
+2025-10-14 17:30:20,317 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_172951_001_20251014_173019.csv
+2025-10-14 17:30:20,325 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_154906_001_20251013_154906.csv
+2025-10-14 17:30:20,337 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_155058_001_20251013_155058.csv
+2025-10-14 17:30:20,340 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251010_165215_001_20251010_165215.csv
+2025-10-14 17:30:20,343 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251010_165601_001_20251010_165601.csv
+2025-10-14 17:30:20,347 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_154254_001_20251013_154254.csv
+2025-10-14 17:30:20,350 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251013_174714_001_20251013_174714.csv
+2025-10-14 17:30:20,354 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251011_172806.json
+2025-10-14 17:30:20,354 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_155249.json
+2025-10-14 17:30:20,355 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_163924.json
+2025-10-14 17:30:20,355 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_170936.json
+2025-10-14 17:30:20,355 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_171506.json
+2025-10-14 17:30:20,355 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251010_165314.json
+2025-10-14 17:30:20,356 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_170410.json
+2025-10-14 17:30:20,356 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_131928.json
+2025-10-14 17:30:20,356 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_160725.json
+2025-10-14 17:30:20,356 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_155257.json
+2025-10-14 17:30:20,356 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_131843.json
+2025-10-14 17:30:20,357 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251011_172413.json
+2025-10-14 17:30:20,357 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_154906.json
+2025-10-14 17:30:20,357 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251010_165156.json
+2025-10-14 17:30:20,357 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251012_092809.json
+2025-10-14 17:30:20,358 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_144333.json
+2025-10-14 17:30:20,358 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_171751.json
+2025-10-14 17:30:20,358 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_154254.json
+2025-10-14 17:30:20,358 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251012_092536.json
+2025-10-14 17:30:20,359 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_171320.json
+2025-10-14 17:30:20,359 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_155058.json
+2025-10-14 17:30:20,359 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_155445.json
+2025-10-14 17:30:20,359 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_143201.json
+2025-10-14 17:30:20,359 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_155430.json
+2025-10-14 17:30:20,360 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251010_165215.json
+2025-10-14 17:30:20,360 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_154428.json
+2025-10-14 17:30:20,360 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251013_174714.json
+2025-10-14 17:30:20,360 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251014_172951.json
+2025-10-14 17:30:20,361 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251010_170038.json
+2025-10-14 17:30:20,361 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251010_165601.json
+2025-10-14 17:30:20,361 - data_exporter - INFO - Processing file: data/raw/session_metadata_20251010_165455.json
+2025-10-14 17:30:20,363 - data_exporter - INFO - Combined data shape: (105126, 13)
+2025-10-14 17:30:23,278 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251014_173020_statistics.json
+2025-10-14 17:30:23,279 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251014_173020.csv
+2025-10-14 17:30:23,279 - data_exporter - INFO - Export to csv completed successfully
+2025-10-14 17:30:23,280 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-14 17:30:23,283 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_172951_001_20251014_173019.csv
+2025-10-14 17:30:23,291 - data_exporter - INFO - Combined data shape: (1000, 13)
+2025-10-14 17:30:23,300 - data_exporter - INFO - HDF5 export completed: data/processed/shimmer3_export_20251014_173023.h5
+2025-10-14 17:30:23,300 - data_exporter - INFO - Export to hdf5 completed successfully
+2025-10-14 17:30:23,300 - main - INFO - Data export completed successfully
+2025-10-14 17:30:24,355 - main - INFO - Received 1100 packets
+2025-10-14 17:30:25,441 - main - INFO - Received 1200 packets
+2025-10-14 17:30:26,507 - main - INFO - Received 1300 packets
+2025-10-14 17:30:27,631 - main - INFO - Received 1400 packets
+2025-10-14 17:30:29,485 - main - INFO - Received 1500 packets
+2025-10-14 17:30:31,442 - main - INFO - Received 1600 packets
+2025-10-14 17:30:33,400 - main - INFO - Received 1700 packets
+2025-10-14 17:30:35,345 - main - INFO - Received 1800 packets
+2025-10-14 17:30:37,293 - main - INFO - Received 1900 packets
+2025-10-14 17:30:39,265 - main - INFO - Received 2000 packets
+2025-10-14 17:30:39,311 - main - INFO - Starting data export...
+2025-10-14 17:30:39,311 - data_exporter - INFO - Starting export to csv format
+2025-10-14 17:30:39,316 - data_exporter - INFO - Processing file: data/raw/shimmer3_data_20251014_172951_001_20251014_173019.csv
+2025-10-14 17:30:39,331 - data_exporter - INFO - Combined data shape: (2000, 13)
+2025-10-14 17:30:39,516 - data_exporter - INFO - Statistics exported: data/processed/shimmer3_export_20251014_173039_statistics.json
+2025-10-14 17:30:39,516 - data_exporter - INFO - CSV export completed: data/processed/shimmer3_export_20251014_173039.csv
+2025-10-14 17:30:39,517 - data_exporter - INFO - Export to csv completed successfully
+2025-10-14 17:30:39,517 - data_exporter - INFO - Starting export to hdf5 format
+2025-10-14 17:30:39,520 - data_exporter - INFO - No new data files to process
+2025-10-14 17:30:39,520 - data_exporter - WARNING - No data to export
+2025-10-14 17:30:39,521 - main - INFO - Data export completed successfully
+2025-10-14 17:30:41,211 - main - INFO - Received 2100 packets
+2025-10-14 17:30:43,159 - main - INFO - Received 2200 packets
+2025-10-14 17:30:45,111 - main - INFO - Received 2300 packets
+2025-10-14 17:30:47,056 - main - INFO - Received 2400 packets
+2025-10-14 17:30:47,179 - main - INFO - Streaming cancelled
+2025-10-14 17:30:47,180 - main - INFO - Cleaning up resources...
+2025-10-14 17:30:47,180 - shimmer_client - INFO - Serial connection closed
+2025-10-14 17:30:47,181 - src.bluetooth_manager - INFO - Cleaning up RFCOMM connections...
+2025-10-14 17:30:47,181 - src.bluetooth_manager - INFO - Skipping RFCOMM cleanup to avoid sudo prompts
+2025-10-14 17:30:47,181 - shimmer_client - INFO - Shimmer3 device disconnected and cleaned up
+2025-10-14 17:30:47,181 - data_logger - INFO - Closing DataLogger...
+2025-10-14 17:30:48,174 - data_logger - INFO - DataLogger closed. Total entries logged: 2405
+2025-10-14 17:30:48,174 - main - INFO - Cleanup completed.

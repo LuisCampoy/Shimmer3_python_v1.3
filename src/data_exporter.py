@@ -324,8 +324,13 @@ class DataExporter:
                             
                             # Combine every 10 chunks to prevent memory overflow
                             if len(combined_chunks) >= 10:
-                                combined = pd.concat(combined_chunks, ignore_index=True)
-                                combined_chunks = [combined]
+                                # Filter out empty chunks before concatenation
+                                non_empty = [c for c in combined_chunks if not c.empty]
+                                if non_empty:
+                                    combined = pd.concat(non_empty, ignore_index=True)
+                                    combined_chunks = [combined]
+                                else:
+                                    combined_chunks = []
                                 
                     elif file_path.suffix == '.json':
                         # Read JSON file
@@ -377,9 +382,15 @@ class DataExporter:
             
             # Combine all chunks
             if combined_chunks:
-                final_data = pd.concat(combined_chunks, ignore_index=True)
-                self.logger.info(f"Combined data shape: {final_data.shape}")
-                return final_data
+                # Filter out empty chunks before final concatenation
+                non_empty = [c for c in combined_chunks if not c.empty]
+                if non_empty:
+                    final_data = pd.concat(non_empty, ignore_index=True)
+                    self.logger.info(f"Combined data shape: {final_data.shape}")
+                    return final_data
+                else:
+                    self.logger.warning("No valid data found in input files (all chunks empty)")
+                    return None
             else:
                 self.logger.warning("No valid data found in input files")
                 return None
