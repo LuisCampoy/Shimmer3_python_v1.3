@@ -10,6 +10,8 @@ import asyncio
 import logging
 import struct
 import time
+import os
+import subprocess
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from enum import Enum
@@ -98,6 +100,9 @@ class ShimmerClient:
         self.sampling_rate = safe_config_get(config, 'sampling_rate', 51.2)
         self.sensors = safe_config_get(config, 'sensors', ['accelerometer', 'gyroscope', 'magnetometer'])
         self.device_address = safe_config_get(config, 'device_address', None)
+        # New connection behavior flags
+        self.manual_rfcomm = safe_config_get(config, 'manual_rfcomm', False)
+        self.keep_open_on_handshake_failure = safe_config_get(config, 'keep_open_on_handshake_failure', True)
         
         # Initialize Bluetooth manager
         self.bluetooth_manager = BluetoothManager()
@@ -117,56 +122,62 @@ class ShimmerClient:
         self.logger.info(f"ShimmerClient initialized for device {self.device_id}")
 
     async def connect(self):
-        """Connect to Shimmer3 device with automatic RFCOMM setup"""
+        """Connect to Shimmer3 device with optional manual RFCOMM management.
+
+        Behaviors:
+        - If manual_rfcomm=True: assumes /dev/rfcommX already bound; skips bluetooth_manager.
+        - If handshake (inquiry/version) fails and keep_open_on_handshake_failure=True, leaves port open for manual interaction.
+        """
         try:
-            self.logger.info(f"Attempting to connect to Shimmer3 device")
-            
-            # Get device address from config
-            device_address = self.config.get('device_address', '00:06:66:B1:4D:A1')
-            
-            self.logger.info(f"Preparing RFCOMM connection for device {device_address}")
-            
-            # Prepare device for RFCOMM connection (pairing + binding)
-            rfcomm_device = self.bluetooth_manager.prepare_shimmer3_connection(device_address)
-            
-            if not rfcomm_device:
-                raise ConnectionError(f"Failed to prepare RFCOMM connection for device {device_address}")
-            
-            # Update port to use the RFCOMM device
-            self.port = rfcomm_device
-            self.logger.info(f"Using RFCOMM device: {self.port}")
-            
-            # Proceed with serial connection
+            self.logger.info("Attempting to connect to Shimmer3 device")
+
+            # Determine RFCOMM device path
+            if self.manual_rfcomm:
+                self.logger.info("Manual RFCOMM mode enabled (manual_rfcomm=True); skipping bluetooth preparation")
+                if not os.path.exists(self.port):
+                    raise ConnectionError(f"RFCOMM device {self.port} does not exist. Bind it manually then retry.")
+            else:
+                device_address = self.config.get('device_address', '00:06:66:B1:4D:A1')
+                self.logger.info(f"Preparing RFCOMM connection for device {device_address}")
+                rfcomm_device = self.bluetooth_manager.prepare_shimmer3_connection(device_address)
+                if not rfcomm_device:
+                    raise ConnectionError(f"Failed to prepare RFCOMM connection for device {device_address}")
+                self.port = rfcomm_device
+
+            # Log current rfcomm show output (best effort)
+            try:
+                show_out = subprocess.run(['rfcomm', 'show', self.port.replace('/dev/rfcomm','')], capture_output=True, text=True, timeout=3)
+                if show_out.returncode == 0:
+                    self.logger.debug(f"rfcomm show output before opening: {show_out.stdout.strip()}")
+            except Exception as sub_e:
+                self.logger.debug(f"Could not get rfcomm show output: {sub_e}")
+
+            # Open serial
             self.serial_conn = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
-            
             if not self.serial_conn.is_open:
                 self.serial_conn.open()
-            
             self.logger.info(f"Serial connection established to {self.port}")
-            
-            # Wait for device to be ready and clear buffers
+
+            # Allow device settle
             await asyncio.sleep(1.0)
             try:
-                self.serial_conn.reset_input_buffer()
-                self.serial_conn.reset_output_buffer()
+                self.serial_conn.reset_input_buffer(); self.serial_conn.reset_output_buffer()
             except Exception:
                 pass
 
-            # Send inquiry command and expect inquiry response (Shimmer typically responds with 0x02)
+            # Attempt inquiry + version handshake only if not disabled
             inquiry = await self._send_and_expect(
                 self.COMMANDS['GET_INQUIRY_COMMAND'],
                 self.RESPONSES['INQUIRY_RESPONSE'],
                 response_len=0,
                 timeout=3.0,
             )
-
             if inquiry is not None:
-                self.logger.info("Shimmer3 device responded to inquiry")
+                self.logger.info("Handshake success: inquiry response received")
                 self.connected = True
                 self.state = ShimmerState.CONNECTED
                 return True
 
-            # Fallback: try to get version response
             version = await self._send_and_expect(
                 self.COMMANDS['GET_SHIMMER_VERSION_COMMAND'],
                 self.RESPONSES['SHIMMER_VERSION_RESPONSE'],
@@ -174,17 +185,28 @@ class ShimmerClient:
                 timeout=3.0,
             )
             if version is not None:
-                self.logger.info(f"Shimmer3 version response received: {version[0]}")
+                self.logger.info(f"Handshake partial success: version response {version[0]}")
                 self.connected = True
                 self.state = ShimmerState.CONNECTED
                 return True
 
-            raise ConnectionError("Shimmer3 device did not respond to inquiry or version requests")
-                
+            msg = "No inquiry/version response received"
+            if self.keep_open_on_handshake_failure:
+                self.logger.warning(msg + "; leaving port open (keep_open_on_handshake_failure=True)")
+                self.connected = True  # treat as connected so user can attempt manual commands
+                self.state = ShimmerState.CONNECTED
+                return True
+            else:
+                raise ConnectionError(msg)
+
         except Exception as e:
             self.logger.error(f"Connection failed: {e}")
-            if self.serial_conn and self.serial_conn.is_open:
-                self.serial_conn.close()
+            # Only close if we are not explicitly keeping it open for diagnostics
+            if (not self.keep_open_on_handshake_failure) and self.serial_conn and self.serial_conn.is_open:
+                try:
+                    self.serial_conn.close()
+                except Exception:
+                    pass
             return False
     
     async def disconnect(self):
