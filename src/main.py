@@ -68,7 +68,8 @@ class ShimmerStreamer:
 
             # Initialize Shimmer client with its sub-config dict
             shimmer_config = self.config.get('shimmer', {})
-            self.shimmer_client = ShimmerClient(shimmer_config)
+            device_id = shimmer_config.get('device_id', None)
+            self.shimmer_client = ShimmerClient(shimmer_config, device_id=device_id)
             
             # Initialize data logger
             data_config = self.config.get('data', {})
