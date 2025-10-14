@@ -410,14 +410,13 @@ class ShimmerClient:
             return False
         
         try:
-            # Send start streaming command
-            if await self._send_command(self.COMMANDS['START_STREAMING_COMMAND']):
-                if await self._wait_for_ack():
-                    self.state = ShimmerState.STREAMING
-                    self.packet_counter = 0
-                    self.data_buffer.clear()
-                    self.logger.info("Started streaming")
-                    return True
+            # Send start streaming command (raw send then single ACK wait)
+            if await self._send_raw_command(self.COMMANDS['START_STREAMING_COMMAND']):
+                self.state = ShimmerState.STREAMING
+                self.packet_counter = 0
+                self.data_buffer.clear()
+                self.logger.info("Started streaming (ACK received)")
+                return True
             
             self.logger.error("Failed to start streaming")
             return False
@@ -425,6 +424,131 @@ class ShimmerClient:
         except Exception as e:
             self.logger.error(f"Error starting streaming: {e}")
             return False
+
+    async def diagnostic_stream_dump(self, seconds: float = 5.0, max_bytes: int = 8192) -> Dict[str, Any]:
+        """Capture raw bytes after issuing START_STREAMING for diagnostics without parsing.
+        Args:
+            seconds: duration to capture after start
+            max_bytes: cap on data collected
+        Returns: dict with byte count and hex preview
+        """
+        result = {"bytes": 0, "hex_preview": "", "truncated": False, "started": False, "buffer": b""}
+        if self.state != ShimmerState.CONNECTED:
+            self.logger.error("Cannot diagnostic stream dump: device not CONNECTED")
+            return result
+        # Attempt to start streaming
+        started = await self.start_streaming()
+        result["started"] = started
+        if not started:
+            self.logger.error("diagnostic_stream_dump could not start streaming")
+            return result
+        start_time = time.time()
+        buf = bytearray()
+        while time.time() - start_time < seconds:
+            try:
+                if self.serial_conn and self.serial_conn.in_waiting:
+                    chunk = self.serial_conn.read(self.serial_conn.in_waiting)
+                    if chunk:
+                        remaining = max_bytes - len(buf)
+                        if remaining <= 0:
+                            result["truncated"] = True
+                            break
+                        if len(chunk) > remaining:
+                            buf.extend(chunk[:remaining])
+                            result["truncated"] = True
+                            break
+                        buf.extend(chunk)
+                await asyncio.sleep(0.01)
+            except Exception as e:
+                self.logger.error(f"Error during diagnostic_stream_dump: {e}")
+                break
+        result["bytes"] = len(buf)
+        result["hex_preview"] = buf[:64].hex()
+        result["buffer"] = bytes(buf)
+        self.logger.info(f"Diagnostic stream dump complete: bytes={result['bytes']}, truncated={result['truncated']}, started={started}")
+        # Attempt to stop streaming gracefully
+        await self.stop_streaming()
+        return result
+
+    async def diagnostic_stream_and_parse(self, seconds: float = 5.0, max_bytes: int = 8192,
+                                          candidate_sizes: Optional[List[int]] = None) -> Dict[str, Any]:
+        """Capture raw bytes then attempt to infer packet size and parse sensor values.
+        Heuristic: look for 0x00 header occurrences and test candidate packet sizes.
+        Returns dict with chosen_size, packets_decoded, sample_packets (up to 5), and remainder bytes.
+        """
+        if candidate_sizes is None:
+            # plausible sizes: header + (accel+gyro+mag=18) + optional battery(2) + maybe packet ID(1) => range 19-24
+            candidate_sizes = list(range(18, 26))
+        dump = await self.diagnostic_stream_dump(seconds=seconds, max_bytes=max_bytes)
+        raw_len = dump.get('bytes', 0)
+        analysis = {
+            'raw_bytes': raw_len,
+            'candidate_sizes': candidate_sizes,
+            'size_scores': {},
+            'chosen_size': None,
+            'packets_decoded': 0,
+            'sample_packets': [],
+            'remainder': 0
+        }
+        # No data case
+        if raw_len == 0:
+            self.logger.warning("diagnostic_stream_and_parse: no raw bytes captured")
+            return analysis
+        raw = dump.get('buffer', b'')
+        if not raw:
+            analysis['raw_bytes'] = 0
+            return analysis
+        analysis['raw_bytes'] = len(raw)
+
+        # Score candidate sizes
+        for size in candidate_sizes:
+            if size <= 0:
+                continue
+            packets = 0
+            idx = 0
+            while idx + size <= len(raw):
+                if raw[idx] == 0x00:  # header match
+                    packets += 1
+                    idx += size
+                else:
+                    # shift until next possible header
+                    idx += 1
+            remainder = len(raw) - (packets * size)
+            # heuristic score: prefer many packets & small remainder
+            score = packets - (remainder / max(1, size))
+            analysis['size_scores'][size] = {
+                'packets': packets,
+                'remainder': remainder,
+                'score': score
+            }
+        # Choose size with highest score
+        chosen = max(analysis['size_scores'], key=lambda s: analysis['size_scores'][s]['score']) if analysis['size_scores'] else None
+        analysis['chosen_size'] = chosen
+        if chosen:
+            packets = []
+            idx = 0
+            while idx + chosen <= len(raw) and len(packets) < 5:
+                if raw[idx] == 0x00:
+                    pkt = raw[idx:idx+chosen]
+                    packets.append(pkt)
+                    idx += chosen
+                else:
+                    idx += 1
+            analysis['packets_decoded'] = analysis['size_scores'][chosen]['packets']
+            analysis['remainder'] = analysis['size_scores'][chosen]['remainder']
+            # Parse sample packets into 16-bit words after header
+            parsed_samples = []
+            for pkt in packets:
+                words = []
+                payload = pkt[1:]
+                for i in range(0, len(payload), 2):
+                    if i + 2 <= len(payload):
+                        val = struct.unpack('<H', payload[i:i+2])[0]
+                        words.append(val)
+                parsed_samples.append({'hex': pkt.hex(), 'words': words})
+            analysis['sample_packets'] = parsed_samples
+        self.logger.info(f"diagnostic_stream_and_parse: chosen_size={analysis['chosen_size']} packets={analysis['packets_decoded']} remainder={analysis['remainder']}")
+        return analysis
     
     async def stop_streaming(self) -> bool:
         """

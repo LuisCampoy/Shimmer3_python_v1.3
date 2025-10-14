@@ -31,6 +31,14 @@ async def main():
                        help='Enable periodic keepalive version requests (sets shimmer.keepalive_enabled=true).')
     parser.add_argument('--keepalive-interval', type=float, default=None,
                        help='Override keepalive interval seconds (sets shimmer.keepalive_interval_seconds).')
+    parser.add_argument('--diagnostic-stream-seconds', type=float, default=0.0,
+                       help='If >0 run a diagnostic raw stream dump for this many seconds then exit (requires active connection).')
+    parser.add_argument('--force-active', action='store_true',
+                       help='Override config to disable passive_connect (perform inquiry/version handshake).')
+    parser.add_argument('--diagnostic-parse-seconds', type=float, default=0.0,
+                       help='If >0 capture and attempt to infer packet size, parsing sample packets.')
+    parser.add_argument('--diagnostic-max-bytes', type=int, default=8192,
+                       help='Maximum bytes to capture for diagnostic parse.')
     
     args = parser.parse_args()
     
@@ -65,6 +73,11 @@ async def main():
                 app.config['shimmer'] = {}
             app.config['shimmer']['keepalive_interval_seconds'] = args.keepalive_interval
             print(f"Keepalive interval set to {args.keepalive_interval}s")
+        if args.force_active and app.config is not None:
+            if 'shimmer' not in app.config:
+                app.config['shimmer'] = {}
+            app.config['shimmer']['passive_connect'] = False
+            print("Passive connect disabled via --force-active")
         
         # Initialize components
         app.initialize_components()
@@ -97,6 +110,28 @@ async def main():
                 result = await app.shimmer_client.passive_sniff(seconds=args.passive_sniff_seconds)
                 print(f"Passive sniff completed: bytes={result['bytes_captured']}, truncated={result['truncated']}, hex_preview={result['hex_preview']}")
                 print("Exiting after passive sniff.")
+                sys.exit(0)
+
+            # Diagnostic streaming dump mode
+            if args.diagnostic_stream_seconds > 0:
+                if not app.shimmer_client:
+                    print("Shimmer client missing; cannot run diagnostic stream dump.")
+                    sys.exit(1)
+                result = await app.shimmer_client.diagnostic_stream_dump(seconds=args.diagnostic_stream_seconds)
+                print(f"Diagnostic stream dump: started={result['started']} bytes={result['bytes']} truncated={result['truncated']} hex_preview={result['hex_preview']}")
+                print("Exiting after diagnostic stream dump.")
+                sys.exit(0)
+
+            if args.diagnostic_parse_seconds > 0:
+                if not app.shimmer_client:
+                    print("Shimmer client missing; cannot run diagnostic parse.")
+                    sys.exit(1)
+                analysis = await app.shimmer_client.diagnostic_stream_and_parse(seconds=args.diagnostic_parse_seconds,
+                                                                                max_bytes=args.diagnostic_max_bytes)
+                print(f"Diagnostic parse: raw_bytes={analysis['raw_bytes']} chosen_size={analysis['chosen_size']} packets={analysis['packets_decoded']} remainder={analysis['remainder']}")
+                for sample in analysis.get('sample_packets', []):
+                    print(f"Sample packet: {sample['hex']} words={sample['words']}")
+                print("Exiting after diagnostic parse.")
                 sys.exit(0)
 
             # Set duration if specified
