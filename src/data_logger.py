@@ -18,6 +18,7 @@ from queue import Queue, Empty
 import gzip
 import pickle
 import pandas as pd
+from utils.config_helpers import safe_config_get, normalize_config_paths
 try:
     from .utils.path_utils import normalize_path, ensure_dir
 except ImportError:
@@ -74,23 +75,16 @@ class DataLogger:
         'battery'
     ]
     
-    def __init__(self, output_dir: str, file_format: str = 'csv', **kwargs):
-        """
-        Initialize DataLogger       
-        Args:
-            output_dir: Output directory for log files
-            file_format: File format ('csv', 'json', 'binary')
-            max_file_size_mb: Maximum file size before rotation (MB)
-            buffer_size: Number of entries to buffer before writing
-            compression: Enable gzip compression
-            auto_flush_interval: Automatic flush interval in seconds
-        """
-        self.output_dir = Path(output_dir)
-        self.file_format = file_format.lower()
-        self.max_file_size = kwargs.get('max_file_size_mb', 100) * 1024 * 1024  # Convert to bytes
-        self.buffer_size = kwargs.get('buffer_size', 1000)
-        self.compression = kwargs.get('compression', False)
-        self.auto_flush_interval = kwargs.get('auto_flush_interval', 5.0)
+    def __init__(self, config):
+        self.config = config
+        
+        # Normalize path configurations
+        path_configs = normalize_config_paths(config, ['output_directory'])
+        
+        # Use helper for other config access
+        self.buffer_size = safe_config_get(config, 'buffer_size', 1000)
+        self.max_file_size = safe_config_get(config, 'file_rotation_size', 100000000)
+        self.auto_flush_interval = safe_config_get(config, 'auto_flush_interval', 30)
         
         # Create output directory (normalize in case config provided dict)
         normalized_output = normalize_path(str(self.output_dir), 'data/raw', 'data.output_directory')
