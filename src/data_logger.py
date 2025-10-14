@@ -1,7 +1,7 @@
 # Data Logger Module
 # Handles logging of Shimmer3 IMU data to various file formats
 # Supports CSV, JSON, and binary formats with buffering and rotation
-# Last revision: 10/12/2025
+# Last revision: 10/14/2025
 
 import asyncio
 import csv

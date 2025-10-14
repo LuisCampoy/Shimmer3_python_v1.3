@@ -1,7 +1,7 @@
 # Shimmer3 IMU Data Streaming, Logging, and Export Tool
 # Main entry point for the application
 # Script created on 10/08/2025
-# Last revision on 10/12/2025
+# Last revision on 10/14/2025
 
 import argparse
 import asyncio

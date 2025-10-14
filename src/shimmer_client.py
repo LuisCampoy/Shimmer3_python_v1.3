@@ -3,7 +3,7 @@
 Shimmer3 Client Module
 Handles communication with Shimmer3 IMU devices via serial/Bluetooth
 Based on Shimmer3 API and protocol specifications
-Last revision: 10/10/2025
+Last revision: 10/14/2025
 """
 
 import serial
