@@ -13,6 +13,7 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 import os
 import json
+from utils.config_helpers import safe_config_get, validate_config_section, get_config_with_defaults
 
 # Fixed imports - use absolute imports for entry point compatibility
 try:
@@ -60,16 +61,27 @@ class ShimmerStreamer:
             if self.config is None:
                 raise RuntimeError("Configuration not loaded. Cannot initialize components.")
 
-            # Initialize Shimmer client with its sub-config dict
-            shimmer_config_dict = {
-                'port': self.config.get('shimmer.port'),
-                'baud_rate': self.config.get('shimmer.baudrate', 115200),
-                'sampling_rate': self.config.get('shimmer.sampling_rate', 51.2),
-                'sensors': self.config.get('shimmer.sensors', ['accelerometer', 'gyroscope', 'magnetometer']),
-                'device_id': self.config.get('shimmer.device_id'),
-                'device_address': self.config.get('shimmer.device_address'),  # Add this
-                'timeout': self.config.get('shimmer.timeout', 5),  # Add this
+            # Validate required configuration sections
+            if not validate_config_section(self.config, 'shimmer', 
+                                         ['port', 'sampling_rate'], self.logger):
+                raise ValueError("Invalid shimmer configuration")
+
+            # Get shimmer config with defaults
+            shimmer_defaults = {
+                'shimmer.port': '/dev/rfcomm0',
+                'shimmer.baud_rate': 115200,
+                'shimmer.sampling_rate': 51.2,
+                'shimmer.timeout': 5,
+                'shimmer.device_address': '00:06:66:B1:4D:A1'
             }
+            shimmer_config = get_config_with_defaults(self.config, shimmer_defaults)
+            
+            # Convert to dict for ShimmerClient (remove the 'shimmer.' prefix)
+            shimmer_config_dict = {
+                key.replace('shimmer.', ''): value 
+                for key, value in shimmer_config.items()
+            }
+            
             self.shimmer_client = ShimmerClient(shimmer_config_dict)
             
             # Initialize data logger - fix inconsistent access
