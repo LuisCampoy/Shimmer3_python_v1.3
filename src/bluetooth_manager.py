@@ -245,21 +245,8 @@ class BluetoothManager:
             
             # Check if device is paired
             if not self.is_device_paired(device_address):
-                self.logger.info(f"Device {device_address} is not paired, attempting to pair...")
-                
-                for attempt in range(max_attempts):
-                    self.logger.info(f"Pairing attempt {attempt + 1}/{max_attempts}")
-                    
-                    if self.pair_device_legacy(device_address):
-                        self.logger.info(f"Successfully paired with device {device_address}")
-                        break
-                    
-                    if attempt < max_attempts - 1:
-                        self.logger.info("Pairing failed, retrying in 5 seconds...")
-                        time.sleep(5)
-                else:
-                    self.logger.error(f"Failed to pair device {device_address} after {max_attempts} attempts")
-                    return None
+                self.logger.warning(f"Device {device_address} is not paired. Please pair manually before running this application.")
+                return None
             else:
                 self.logger.info(f"Device {device_address} is already paired")
             
