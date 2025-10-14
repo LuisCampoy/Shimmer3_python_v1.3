@@ -105,6 +105,11 @@ class ShimmerClient:
         self.keep_open_on_handshake_failure = safe_config_get(config, 'keep_open_on_handshake_failure', True)
         self.passive_connect = safe_config_get(config, 'passive_connect', False)  # if True, open port and do not send handshake
         self.verbose_serial = safe_config_get(config, 'verbose_serial', False)    # if True, log raw incoming bytes during connect
+        # Connection preservation & keepalive
+        self.preserve_connection = safe_config_get(config, 'preserve_connection', False)  # if True, skip automatic disconnect/serial close
+        self.keepalive_enabled = safe_config_get(config, 'keepalive_enabled', False)  # if True, send periodic lightweight commands to keep BT link active
+        self.keepalive_interval = safe_config_get(config, 'keepalive_interval_seconds', 10.0)
+        self._keepalive_task = None
         
         # Initialize Bluetooth manager
         self.bluetooth_manager = BluetoothManager()
@@ -117,6 +122,7 @@ class ShimmerClient:
         
         # Data buffer
         self.data_buffer = []
+        self.enabled_sensors = []  # initialize list to avoid attribute errors
         
         # Logger
         self.logger = logging.getLogger(__name__)
@@ -182,6 +188,9 @@ class ShimmerClient:
                     self.logger.info(f"Passive connect captured {len(raw_bytes)} bytes initial data")
                 self.connected = True
                 self.state = ShimmerState.CONNECTED
+                # Start keepalive if enabled even in passive mode (will send version command silently)
+                if self.keepalive_enabled:
+                    self._start_keepalive_loop()
                 return True
             else:
                 # Attempt inquiry + version handshake only if not disabled
@@ -195,6 +204,8 @@ class ShimmerClient:
                     self.logger.info("Handshake success: inquiry response received")
                     self.connected = True
                     self.state = ShimmerState.CONNECTED
+                    if self.keepalive_enabled:
+                        self._start_keepalive_loop()
                     return True
 
                 version = await self._send_and_expect(
@@ -207,6 +218,8 @@ class ShimmerClient:
                     self.logger.info(f"Handshake partial success: version response {version[0]}")
                     self.connected = True
                     self.state = ShimmerState.CONNECTED
+                    if self.keepalive_enabled:
+                        self._start_keepalive_loop()
                     return True
 
                 msg = "No inquiry/version response received"
@@ -214,6 +227,8 @@ class ShimmerClient:
                     self.logger.warning(msg + "; leaving port open (keep_open_on_handshake_failure=True)")
                     self.connected = True  # treat as connected so user can attempt manual commands
                     self.state = ShimmerState.CONNECTED
+                    if self.keepalive_enabled:
+                        self._start_keepalive_loop()
                     return True
                 else:
                     raise ConnectionError(msg)
@@ -231,6 +246,9 @@ class ShimmerClient:
     async def disconnect(self):
         """Disconnect from Shimmer3 device and cleanup RFCOMM"""
         try:
+            if self.preserve_connection:
+                self.logger.info("preserve_connection=True; skipping disconnect to keep RFCOMM binding and serial open")
+                return
             if self.connected and self.serial_conn:
                 # Stop streaming if active
                 if hasattr(self, 'streaming') and self.streaming:
@@ -249,6 +267,46 @@ class ShimmerClient:
             
         except Exception as e:
             self.logger.error(f"Error during disconnection: {e}")
+
+    def _start_keepalive_loop(self):
+        """Start background keepalive loop if not already running."""
+        if self._keepalive_task and not self._keepalive_task.done():
+            return
+        self.logger.info(f"Starting keepalive loop every {self.keepalive_interval}s (enabled={self.keepalive_enabled})")
+        self._keepalive_task = asyncio.create_task(self._keepalive_loop())
+
+    async def _keepalive_loop(self):
+        consecutive_failures = 0
+        while self.keepalive_enabled and self.connected and self.serial_conn and self.serial_conn.is_open:
+            try:
+                # Send a lightweight version command to nudge link
+                resp = await self._send_and_expect(
+                    self.COMMANDS['GET_SHIMMER_VERSION_COMMAND'],
+                    self.RESPONSES['SHIMMER_VERSION_RESPONSE'],
+                    response_len=1,
+                    timeout=2.0
+                )
+                if resp is not None:
+                    consecutive_failures = 0
+                    self.logger.debug(f"Keepalive success (version={resp[0]})")
+                else:
+                    consecutive_failures += 1
+                    if consecutive_failures == 1:
+                        self.logger.warning("Keepalive failed (no version response)")
+                    elif consecutive_failures % 3 == 0:
+                        self.logger.warning(f"Keepalive failing repeatedly (failures={consecutive_failures})")
+                await asyncio.sleep(self.keepalive_interval)
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                self.logger.error(f"Keepalive loop error: {e}")
+                await asyncio.sleep(self.keepalive_interval)
+        self.logger.info("Keepalive loop ending")
+
+    def enable_preserve(self):
+        """Public method to enable connection preservation at runtime."""
+        self.preserve_connection = True
+        self.logger.info("Connection preservation enabled (will skip disconnect)")
     
     async def configure_sensors(self, sensors: List[str], sampling_rate: float = 51.2) -> bool:
         """
@@ -300,6 +358,45 @@ class ShimmerClient:
         except Exception as e:
             self.logger.error(f"Sensor configuration failed: {e}")
             return False
+
+    async def passive_sniff(self, seconds: float = 5.0, max_bytes: int = 2048) -> Dict[str, Any]:
+        """Sniff raw bytes from the serial port without sending any commands.
+        Args:
+            seconds: duration to listen
+            max_bytes: cap on bytes to collect
+        Returns: dict with count and a hex preview
+        """
+        result = {"bytes_captured": 0, "hex_preview": "", "truncated": False}
+        if not self.serial_conn or not self.serial_conn.is_open:
+            self.logger.error("passive_sniff called but serial not open")
+            return result
+        start = time.time()
+        buf = bytearray()
+        while time.time() - start < seconds:
+            try:
+                if self.serial_conn.in_waiting:
+                    chunk = self.serial_conn.read(self.serial_conn.in_waiting)
+                    if chunk:
+                        remaining = max_bytes - len(buf)
+                        if remaining <= 0:
+                            result["truncated"] = True
+                            break
+                        if len(chunk) > remaining:
+                            buf.extend(chunk[:remaining])
+                            result["truncated"] = True
+                            break
+                        buf.extend(chunk)
+                await asyncio.sleep(0.02)
+            except Exception as e:
+                self.logger.error(f"Error during passive_sniff: {e}")
+                break
+        result["bytes_captured"] = len(buf)
+        result["hex_preview"] = buf[:64].hex()
+        if result["bytes_captured"]:
+            self.logger.info(f"Passive sniff captured {result['bytes_captured']} bytes (preview {result['hex_preview']})")
+        else:
+            self.logger.info("Passive sniff captured 0 bytes")
+        return result
     
     async def start_streaming(self) -> bool:
         """
