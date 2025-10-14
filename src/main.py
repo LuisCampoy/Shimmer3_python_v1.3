@@ -67,43 +67,43 @@ class ShimmerStreamer:
                 'sampling_rate': self.config.get('shimmer.sampling_rate', 51.2),
                 'sensors': self.config.get('shimmer.sensors', ['accelerometer', 'gyroscope', 'magnetometer']),
                 'device_id': self.config.get('shimmer.device_id'),
+                'device_address': self.config.get('shimmer.device_address'),  # Add this
+                'timeout': self.config.get('shimmer.timeout', 5),  # Add this
             }
             self.shimmer_client = ShimmerClient(shimmer_config_dict)
             
-            # Initialize data logger
-            data_config = self.config.get('data', {})
-            raw_dir = data_config.get('raw_directory', 'data/raw')
-            file_format = data_config.get('format', 'csv')
-            max_file_size_mb = data_config.get('max_file_size_mb', data_config.get('max_file_size', 100))
-            buffer_size = data_config.get('buffer_size', 1000)
-            compression = data_config.get('compression', False)
-            auto_flush_interval = data_config.get('auto_flush_interval', 5.0)
-
+            # Initialize data logger - fix inconsistent access
+            raw_dir = self.config.get('data.raw_directory', 'data/raw')
+            file_format = self.config.get('data.format', 'csv')
+            buffer_size = self.config.get('data.buffer_size', 1000)
+            max_file_size = self.config.get('data.max_file_size_mb', 100)
+            
             self.data_logger = DataLogger(
-                raw_dir,
-                file_format,
-                max_file_size_mb=max_file_size_mb,
+                output_dir=raw_dir,
+                file_format=file_format,
                 buffer_size=buffer_size,
-                compression=compression,
-                auto_flush_interval=auto_flush_interval,
-                export_interval_seconds=self.config.get('export', {}).get('interval_seconds', 60),
-                min_records_threshold=self.config.get('export', {}).get('min_records_threshold', 1000),
+                max_file_size_mb=max_file_size
             )
             
-            # Initialize data exporter
-            export_config = self.config.get('export', {})
-            processed_dir = data_config.get('processed_directory', 'data/processed')
-            if export_config.get('enabled', True):
-                # DataExporter expects input/output directories (strings/PathLikes), not dicts
-                self.data_exporter = DataExporter(
-                    input_dir=raw_dir,
-                    output_dir=processed_dir,
-                )
+            # Initialize data exporter - fix inconsistent access
+            input_dir = raw_dir
+            output_dir = self.config.get('data.processed_directory', 'data/processed')
+            export_formats = self.config.get('export.formats', ['csv', 'hdf5'])
+            include_statistics = self.config.get('export.include_statistics', True)
+            compression = self.config.get('export.compression', True)
+            
+            self.data_exporter = DataExporter(
+                input_dir=input_dir,
+                output_dir=output_dir,
+                formats=export_formats,
+                include_statistics=include_statistics,
+                compression=compression
+            )
             
             self.logger.info("All components initialized successfully")
             
         except Exception as e:
-            self.logger.error(f"Failed to initialize components: {e}")
+            self.logger.error(f"Component initialization failed: {e}")
             raise
 
     async def connect_shimmer(self) -> None:
@@ -247,10 +247,12 @@ class ShimmerStreamer:
         timestamp = data_packet.get('timestamp', 'N/A')
         accel = data_packet.get('accelerometer', {})
         gyro = data_packet.get('gyroscope', {})
-
-        print(f"\rTime: {timestamp} | "
-              f"Accel: X={accel.get('x', 0):.2f} Y={accel.get('y', 0):.2f} Z={accel.get('z', 0):.2f} | "
-              f"Gyro: X={gyro.get('x', 0):.3f} Y={gyro.get('y', 0):.3f} Z={gyro.get('z', 0):.3f}",
+        mag = data_packet.get('magnetometer', {})
+        
+        print(f"\r[{timestamp}] "
+              f"Accel: ({accel.get('x', 0):.2f}, {accel.get('y', 0):.2f}, {accel.get('z', 0):.2f}) "
+              f"Gyro: ({gyro.get('x', 0):.2f}, {gyro.get('y', 0):.2f}, {gyro.get('z', 0):.2f}) "
+              f"Mag: ({mag.get('x', 0):.2f}, {mag.get('y', 0):.2f}, {mag.get('z', 0):.2f})", 
               end='', flush=True)
         
     async def cleanup(self) -> None:
@@ -283,25 +285,20 @@ class ShimmerStreamer:
         self.running = False
 
     async def _export_loop(self):
-        while True:
+        """Background export loop"""
+        # Fix inconsistent config access
+        export_interval = self.config.get('export.interval_seconds', 60)
+        
+        while self.shimmer_client and self.shimmer_client.streaming:
             try:
-                if self.data_logger and self.data_logger.should_export():
-                    self.logger.info("Starting data export...")
-                    if self.data_exporter:
-                        await self.data_exporter.export('csv')
-                        await self.data_exporter.export('hdf5')
-                    else:
-                        self.logger.error("Data exporter not initialized")
-                    if hasattr(self.data_logger, "mark_export_completed"):
-                        self.data_logger.mark_export_completed()
-                    self.logger.info("Data export completed successfully")
+                await asyncio.sleep(export_interval)
+                await self.export_data()
             except Exception as e:
-                self.logger.error(f"Export failed: {e}")
-            # Sleep a bit to avoid hammering the exporter
-            interval = 30.0
-            if isinstance(self.config, dict):
-                interval = self.config.get('export.interval', 30.0)
-            await asyncio.sleep(interval) # export frequency from config file (changed from 2 to 30)
+                # Fix inconsistent config access
+                continue_on_error = self.config.get('error_handling.continue_on_error', True)
+                self.logger.error(f"Export loop error: {e}")
+                if not continue_on_error:
+                    break
 
     async def start(self):        
         # Start background export only when enabled
