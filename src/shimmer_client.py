@@ -1,3 +1,4 @@
+
 """
 Shimmer3 Client Module
 Handles communication with Shimmer3 IMU devices via serial/Bluetooth
@@ -425,6 +426,45 @@ class ShimmerClient:
             self.logger.error(f"Error starting streaming: {e}")
             return False
 
+    async def _wait_for_ack(self, timeout: float = 2.0) -> bool:
+        """Wait for ACK byte (0xFF)."""
+        if not self.serial_conn or not self.serial_conn.is_open:
+            return False
+        start = time.time()
+        while time.time() - start < timeout:
+            if self.serial_conn.in_waiting:
+                resp = self.serial_conn.read(1)
+                if resp and resp[0] == self.RESPONSES['ACK_COMMAND_PROCESSED']:
+                    return True
+            await asyncio.sleep(0.01)
+        return False
+
+    async def _send_command(self, command: int) -> bool:
+        """Send single-byte command and wait for ACK."""
+        if not self.serial_conn or not self.serial_conn.is_open:
+            return False
+        try:
+            self.serial_conn.write(bytes([command]))
+            self.serial_conn.flush()
+            return await self._wait_for_ack()
+        except Exception as e:
+            self.logger.error(f"_send_command error: {e}")
+            return False
+
+    async def _send_raw_command(self, command: int, data: bytes = b'') -> bool:
+        """Send command followed by raw payload then wait for ACK."""
+        if not self.serial_conn or not self.serial_conn.is_open:
+            return False
+        try:
+            self.serial_conn.write(bytes([command]))
+            if data:
+                self.serial_conn.write(data)
+            self.serial_conn.flush()
+            return await self._wait_for_ack()
+        except Exception as e:
+            self.logger.error(f"_send_raw_command error: {e}")
+            return False
+
     async def diagnostic_stream_dump(self, seconds: float = 5.0, max_bytes: int = 8192) -> Dict[str, Any]:
         """Capture raw bytes after issuing START_STREAMING for diagnostics without parsing.
         Args:
@@ -651,118 +691,124 @@ class ShimmerClient:
             return False
     
     def _calculate_packet_size(self) -> None:
-        """Calculate expected packet size based on enabled sensors"""
-        size = 1  # Packet type byte
-        
-        for sensor in self.enabled_sensors:
-            if sensor == SensorType.ACCELEROMETER:
-                size += 6  # 3 axes * 2 bytes
-            elif sensor == SensorType.GYROSCOPE:
-                size += 6  # 3 axes * 2 bytes
-            elif sensor == SensorType.MAGNETOMETER:
-                size += 6  # 3 axes * 2 bytes
-            elif sensor == SensorType.BATTERY:
-                size += 2  # 1 value * 2 bytes
-        
-        self.packet_size = size
-        self.logger.debug(f"Expected packet size: {size} bytes")
+        """Set packet size using diagnostic-derived constant for current sensor set."""
+        # If accel+gyro+mag all enabled we observed 22-byte packets with leading 0x00 and 10 words (20 bytes) following 2-byte header.
+        enabled = set(self.enabled_sensors)
+        if {SensorType.ACCELEROMETER, SensorType.GYROSCOPE, SensorType.MAGNETOMETER}.issubset(enabled):
+            self.packet_size = 22
+        else:
+            # Fallback estimation: 2-byte header + per-sensor payloads (6 bytes each axis sensor, 2 battery) + optional meta/checksum (4)
+            size = 2
+            for s in enabled:
+                if s in (SensorType.ACCELEROMETER, SensorType.GYROSCOPE, SensorType.MAGNETOMETER):
+                    size += 6
+                elif s == SensorType.BATTERY:
+                    size += 2
+            # Add meta+checksum if at least two axis groups (heuristic)
+            axis_groups = len([s for s in enabled if s in (SensorType.ACCELEROMETER, SensorType.GYROSCOPE, SensorType.MAGNETOMETER)])
+            if axis_groups >= 2:
+                size += 4
+            self.packet_size = size
+        self.logger.debug(f"Packet size set to {self.packet_size}")
     
     async def _parse_data_packet(self) -> Optional[Dict[str, Any]]:
         """Parse data packet from buffer"""
         if len(self.data_buffer) < self.packet_size:
             return None
-        
         try:
-            # Look for packet start (0x00 for data packet)
-            while len(self.data_buffer) >= self.packet_size:
-                if self.data_buffer[0] == 0x00:  # Data packet identifier
-                    # Extract packet
-                    packet_data = bytes(self.data_buffer[1:self.packet_size])
-                    self.data_buffer = self.data_buffer[self.packet_size:]
-                    
-                    # Parse sensor data
-                    return await self._parse_sensor_data(packet_data)
-                else:
-                    # Remove invalid byte
-                    self.data_buffer.pop(0)
-            
+            # Scan for header (first byte 0x00). We treat first two bytes as header word.
+            buf = self.data_buffer
+            max_start = len(buf) - self.packet_size
+            for start in range(max_start + 1):
+                if buf[start] == 0x00:
+                    # Candidate packet slice
+                    packet = bytes(buf[start:start + self.packet_size])
+                    # Consume buffer up to end of packet
+                    self.data_buffer = buf[start + self.packet_size:]
+                    header_word = struct.unpack('<H', packet[:2])[0]
+                    payload = packet[2:]
+                    parsed = await self._parse_sensor_data(payload)
+                    parsed['header_word'] = header_word
+                    return parsed
+            # If no header yet, discard leading noise bytes before first 0x00 to avoid growth
+            first_zero = None
+            for i, b in enumerate(buf):
+                if b == 0x00:
+                    first_zero = i; break
+            if first_zero is not None and first_zero > 0:
+                del self.data_buffer[:first_zero]
+            elif first_zero is None:
+                # If no zero byte at all and buffer large, trim some noise
+                if len(self.data_buffer) > self.packet_size * 2:
+                    self.data_buffer = self.data_buffer[-self.packet_size:]
             return None
-            
         except Exception as e:
             self.logger.error(f"Error parsing data packet: {e}")
             return None
     
-    async def _parse_sensor_data(self, data: bytes) -> Dict[str, Any]:
-        """Parse sensor data from packet"""
-        result = {
-            'timestamp': time.time(),
-            'packet_id': self.packet_counter
-        }
-        
-        self.packet_counter += 1
+
+    async def _parse_sensor_data(self, data: bytes) -> dict:
+        """Parse 20-byte payload: 3x3 axes (accel, gyro, mag), meta, checksum."""
+        result = {'timestamp': time.time(), 'packet_id': getattr(self, 'packet_counter', 0)}
         offset = 0
-        
         try:
-            for sensor in self.enabled_sensors:
-                if sensor == SensorType.ACCELEROMETER:
-                    if offset + 6 <= len(data):
-                        x, y, z = struct.unpack('<HHH', data[offset:offset+6])
-                        result['accelerometer'] = {
-                            'x': self._convert_accel(x),
-                            'y': self._convert_accel(y), 
-                            'z': self._convert_accel(z)
-                        }
-                        offset += 6
-                
-                elif sensor == SensorType.GYROSCOPE:
-                    if offset + 6 <= len(data):
-                        x, y, z = struct.unpack('<HHH', data[offset:offset+6])
-                        result['gyroscope'] = {
-                            'x': self._convert_gyro(x),
-                            'y': self._convert_gyro(y),
-                            'z': self._convert_gyro(z)
-                        }
-                        offset += 6
-                
-                elif sensor == SensorType.MAGNETOMETER:
-                    if offset + 6 <= len(data):
-                        x, y, z = struct.unpack('<HHH', data[offset:offset+6])
-                        result['magnetometer'] = {
-                            'x': self._convert_mag(x),
-                            'y': self._convert_mag(y),
-                            'z': self._convert_mag(z)
-                        }
-                        offset += 6
-                
-                elif sensor == SensorType.BATTERY:
-                    if offset + 2 <= len(data):
-                        battery_raw = struct.unpack('<H', data[offset:offset+2])[0]
-                        result['battery'] = self._convert_battery(battery_raw)
-                        offset += 2
-            
-            return result
-            
+            # Each axes group: 3x 16-bit little-endian
+            def read_axes():
+                nonlocal offset
+                x, y, z = struct.unpack('<HHH', data[offset:offset+6])
+                offset += 6
+                return x, y, z
+            # Parse in order: accel, gyro, mag
+            if offset + 6 <= len(data):
+                ax, ay, az = read_axes()
+                result['accelerometer'] = {
+                    'x_raw': ax, 'y_raw': ay, 'z_raw': az,
+                    'x': self._convert_accel(ax),
+                    'y': self._convert_accel(ay),
+                    'z': self._convert_accel(az)
+                }
+            if offset + 6 <= len(data):
+                gx, gy, gz = read_axes()
+                result['gyroscope'] = {
+                    'x_raw': gx, 'y_raw': gy, 'z_raw': gz,
+                    'x': self._convert_gyro(gx),
+                    'y': self._convert_gyro(gy),
+                    'z': self._convert_gyro(gz)
+                }
+            if offset + 6 <= len(data):
+                mx, my, mz = read_axes()
+                result['magnetometer'] = {
+                    'x_raw': mx, 'y_raw': my, 'z_raw': mz,
+                    'x': self._convert_mag(mx),
+                    'y': self._convert_mag(my),
+                    'z': self._convert_mag(mz)
+                }
+            # Meta word
+            if offset + 2 <= len(data):
+                meta = struct.unpack('<H', data[offset:offset+2])[0]
+                result['meta_word'] = meta
+                offset += 2
+            # Checksum word
+            if offset + 2 <= len(data):
+                checksum = struct.unpack('<H', data[offset:offset+2])[0]
+                result['checksum_word'] = checksum
+                offset += 2
         except Exception as e:
             self.logger.error(f"Error parsing sensor data: {e}")
-            return result
-    
-    def _convert_accel(self, raw_value: int) -> float:
-        """Convert raw accelerometer value to m/s²"""
-        # Convert from unsigned to signed
-        if raw_value > 32767:
-            raw_value -= 65536
-        
-        # Convert to g-force then to m/s²
-        sensitivity = 1365.0  # LSB/g for ±2g range
-        g_force = raw_value / sensitivity
-        return g_force * 9.81  # Convert to m/s²
+        return result
     
     def _convert_gyro(self, raw_value: int) -> float:
         """Convert raw gyroscope value to degrees/second"""
         if raw_value > 32767:
             raw_value -= 65536
-        
         sensitivity = 131.0  # LSB/(°/s) for ±250°/s range
+        return raw_value / sensitivity
+
+    def _convert_accel(self, raw_value: int) -> float:
+        """Convert raw accelerometer value to g units (assuming ±2g, 16-bit, 16384 LSB/g)."""
+        if raw_value > 32767:
+            raw_value -= 65536
+        sensitivity = 16384.0  # LSB/g for ±2g
         return raw_value / sensitivity
     
     def _convert_mag(self, raw_value: int) -> float:
@@ -797,53 +843,8 @@ class ShimmerClient:
                 }
             }
             self.logger.info("Calibration data parsed")
-            
         except Exception as e:
             self.logger.warning(f"Could not parse calibration data: {e}")
-    
-    async def _send_command(self, command: int) -> bool:
-        """Send command to Shimmer device"""
-        if not self.serial_conn or not self.serial_conn.is_open:
-            return False
-        
-        try:
-            self.serial_conn.write(bytes([command]))
-            self.serial_conn.flush()
-            return await self._wait_for_ack()
-        except Exception as e:
-            self.logger.error(f"Error sending command: {e}")
-            return False
-
-    async def _send_raw_command(self, command: int, data: bytes = b'') -> bool:
-        """Send raw command with optional data to Shimmer device"""
-        if not self.serial_conn or not self.serial_conn.is_open:
-            return False
-        
-        try:
-            # Send command
-            self.serial_conn.write(bytes([command]))
-            if data:
-                self.serial_conn.write(data)
-            self.serial_conn.flush()
-            return await self._wait_for_ack()
-        except Exception as e:
-            self.logger.error(f"Error sending raw command: {e}")
-            return False
-
-    async def _wait_for_ack(self, timeout: float = 2.0) -> bool:
-        """Wait for ACK response"""
-        if not self.serial_conn:
-            return False
-        
-        start_time = time.time()
-        while (time.time() - start_time) < timeout:
-            if self.serial_conn.in_waiting > 0:
-                response = self.serial_conn.read(1)
-                if response and response[0] == self.RESPONSES['ACK_COMMAND_PROCESSED']:
-                    return True
-            await asyncio.sleep(0.01)
-        
-        return False
     
     async def _read_response(self, expected_response: int, length: int, timeout: float = 2.0) -> Optional[bytes]:
         """Read response with expected format"""
