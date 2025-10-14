@@ -18,15 +18,11 @@ from queue import Queue, Empty
 import gzip
 import pickle
 import pandas as pd
-from utils.config_helpers import safe_config_get, normalize_config_paths
-try:
-    from .utils.path_utils import normalize_path, ensure_dir
-except ImportError:
-    from utils.path_utils import normalize_path, ensure_dir
+from utils.config_helpers import safe_config_get
 
 @dataclass
 class LogEntry:
-    """Single log entry structure"""
+    """Data structure for a single log entry"""
     timestamp: float
     packet_id: int
     accel_x: Optional[float] = None
@@ -39,6 +35,7 @@ class LogEntry:
     mag_y: Optional[float] = None
     mag_z: Optional[float] = None
     battery: Optional[float] = None
+    temperature: Optional[float] = None
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary"""
@@ -47,102 +44,65 @@ class LogEntry:
     def to_csv_row(self) -> List[Any]:
         """Convert to CSV row"""
         return [
-            self.timestamp,
-            self.packet_id,
-            self.accel_x or 0.0,
-            self.accel_y or 0.0,
-            self.accel_z or 0.0,
-            self.gyro_x or 0.0,
-            self.gyro_y or 0.0,
-            self.gyro_z or 0.0,
-            self.mag_x or 0.0,
-            self.mag_y or 0.0,
-            self.mag_z or 0.0,
-            self.battery or 0.0
+            self.timestamp, self.packet_id, self.accel_x, self.accel_y, self.accel_z,
+            self.gyro_x, self.gyro_y, self.gyro_z, self.mag_x, self.mag_y, self.mag_z,
+            self.battery, self.temperature
         ]
 
-
 class DataLogger:
-    """
-    Data logger for Shimmer3 IMU data with support for multiple formats
-    """
-    
+    # CSV column headers
     CSV_HEADERS = [
-        'timestamp', 'packet_id',
-        'accel_x', 'accel_y', 'accel_z',
-        'gyro_x', 'gyro_y', 'gyro_z',
-        'mag_x', 'mag_y', 'mag_z',
-        'battery'
+        'timestamp', 'packet_id', 'accel_x', 'accel_y', 'accel_z',
+        'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z',
+        'battery', 'temperature'
     ]
     
-    def __init__(self, config):
+    def __init__(self, output_dir: str, file_format: str = 'csv', 
+                 buffer_size: int = 1000, max_file_size_mb: int = 100, config: Any = None):
+        """Initialize DataLogger with configuration"""
+        self.output_dir = Path(output_dir)
+        self.file_format = file_format
+        self.buffer_size = buffer_size
+        self.max_file_size_mb = max_file_size_mb
+        self.max_file_size = max_file_size_mb * 1024 * 1024  # Convert to bytes
         self.config = config
         
-        # Normalize path configurations
-        path_configs = normalize_config_paths(config, ['output_directory'])
+        # Use consistent config access
+        self.auto_flush_interval = safe_config_get(config, 'data.auto_flush_interval', 30)
+        self.compression_enabled = safe_config_get(config, 'data.compression', False)
+        self.compression = self.compression_enabled  # Alias for compatibility
+        self.backup_enabled = safe_config_get(config, 'data.backup_enabled', True)
         
-        # Use helper for other config access
-        self.buffer_size = safe_config_get(config, 'buffer_size', 1000)
-        self.max_file_size = safe_config_get(config, 'file_rotation_size', 100000000)
-        self.auto_flush_interval = safe_config_get(config, 'auto_flush_interval', 30)
-        
-        # Create output directory (normalize in case config provided dict)
-        normalized_output = normalize_path(str(self.output_dir), 'data/raw', 'data.output_directory')
-        ensure_dir(normalized_output)
-        # Keep Path consistent for rest of code
-        self.output_dir = Path(normalized_output)
-        
-        # File management
-        self.current_file: Optional[Union[Path, Any]] = None
-        self.current_file_handle = None
+        # Initialize core attributes
+        self.buffer = []  # Main data buffer
+        self.data_buffer = []  # Alias for compatibility
+        self.buffer_lock = threading.Lock()
+        self.current_file = None
         self.current_writer = None
         self.file_counter = 0
-        self.entries_logged = 0
-        # Track rows actually written to the current file
-        self.file_entries_written = 0
-        
-        # Buffering
-        self.buffer: List[LogEntry] = []
-        self.buffer_lock = threading.Lock()
-        
-        # Async queue for thread-safe logging
-        self.log_queue: Queue = Queue()
-        self.logging_active = False
-        self.logging_thread: Optional[threading.Thread] = None
-        
-        # Auto-flush timer
-        self.last_flush_time = time.time()
-        
-        # Session info
+        self.session_id = datetime.now().strftime('%Y%m%d_%H%M%S')
         self.session_start_time = datetime.now()
-        self.session_id = self.session_start_time.strftime('%Y%m%d_%H%M%S')
+        self.logging_active = False
         
-        # Logging
-        self.logger = logging.getLogger(__name__)
-        
-        # Export thresholds (can be overridden by config hookup if you pass it in)
-        self.export_interval_seconds = kwargs.get('export_interval_seconds', 60)
-        self.min_records_threshold = kwargs.get('min_records_threshold', 1000)
-
-        # Stats used by should_export and metadata
+        # Statistics tracking
         self.stats = {
             'total_entries': 0,
             'entries_since_last_export': 0,
             'total_exports': 0,
             'files_created': 0,
             'bytes_written': 0,
-            'session_start': datetime.now(),
+            'session_start': self.session_start_time,
             'last_entry_time': None,
-            'last_export_time': datetime.now(),
+            'last_export_time': None
         }
-        # Track exports
-        self.last_export_time: float = 0.0
-        self.last_export_count: int = 0
-        # Initialize first file
-        self._create_new_file()
         
-        self.logger.info(f"DataLogger initialized - Format: {file_format}, "
-                        f"Output: {output_dir}, Buffer: {self.buffer_size}")
+        # Queue for async logging
+        self.log_queue = Queue()
+        
+        self.logger = logging.getLogger(__name__)
+        
+        # Ensure output directory exists
+        self.output_dir.mkdir(parents=True, exist_ok=True)
     
     async def log_data(self, data_packet: Dict[str, Any]) -> None:
         """

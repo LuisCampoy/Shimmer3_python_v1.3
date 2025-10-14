@@ -22,12 +22,14 @@ try:
     from .data_logger import DataLogger
     from .data_exporter import DataExporter
     from .utils.config import Config
+    from .utils.config_helpers import safe_config_get, validate_config_section, get_config_with_defaults
 except ImportError:
     # Fall back to absolute imports (when run as script)
     from shimmer_client import ShimmerClient
     from data_logger import DataLogger
     from data_exporter import DataExporter
     from utils.config import Config
+    from utils.config_helpers import safe_config_get, validate_config_section, get_config_with_defaults
 
 # Create Class for the application
 class ShimmerStreamer:
@@ -44,78 +46,61 @@ class ShimmerStreamer:
             config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'shimmer_config.json')
         
         self.load_config(config_path)
-        
+
     def load_config(self, config_path: str):
         """Load configuration from JSON file"""
         try:
-            from utils.config import Config
-            self.config = Config(config_path)  # Use Config class instead of json.load
+            # Ensure config_path is a string
+            if isinstance(config_path, Path):
+                config_path = str(config_path)
+            with open(config_path, 'r') as f:
+                self.config = json.load(f)
             self.logger.info(f"Configuration loaded from {config_path}")
         except Exception as e:
             self.logger.error(f"Failed to load configuration: {e}")
             raise
-    
+            
     def initialize_components(self):
         """Initialize all system components"""
         try:
             if self.config is None:
                 raise RuntimeError("Configuration not loaded. Cannot initialize components.")
 
-            # Validate required configuration sections
-            if not validate_config_section(self.config, 'shimmer', 
-                                         ['port', 'sampling_rate'], self.logger):
-                raise ValueError("Invalid shimmer configuration")
+            # Initialize Shimmer client with its sub-config dict
+            shimmer_config = self.config.get('shimmer', {})
+            self.shimmer_client = ShimmerClient(shimmer_config)
+            
+            # Initialize data logger
+            data_config = self.config.get('data', {})
+            raw_dir = data_config.get('raw_directory', 'data/raw')
+            file_format = data_config.get('format', 'csv')
+            max_file_size_mb = data_config.get('max_file_size_mb', data_config.get('max_file_size', 100))
+            buffer_size = data_config.get('buffer_size', 1000)
+            compression = data_config.get('compression', False)
+            auto_flush_interval = data_config.get('auto_flush_interval', 5.0)
 
-            # Get shimmer config with defaults
-            shimmer_defaults = {
-                'shimmer.port': '/dev/rfcomm0',
-                'shimmer.baud_rate': 115200,
-                'shimmer.sampling_rate': 51.2,
-                'shimmer.timeout': 5,
-                'shimmer.device_address': '00:06:66:B1:4D:A1'
-            }
-            shimmer_config = get_config_with_defaults(self.config, shimmer_defaults)
-            
-            # Convert to dict for ShimmerClient (remove the 'shimmer.' prefix)
-            shimmer_config_dict = {
-                key.replace('shimmer.', ''): value 
-                for key, value in shimmer_config.items()
-            }
-            
-            self.shimmer_client = ShimmerClient(shimmer_config_dict)
-            
-            # Initialize data logger - fix inconsistent access
-            raw_dir = self.config.get('data.raw_directory', 'data/raw')
-            file_format = self.config.get('data.format', 'csv')
-            buffer_size = self.config.get('data.buffer_size', 1000)
-            max_file_size = self.config.get('data.max_file_size_mb', 100)
-            
             self.data_logger = DataLogger(
                 output_dir=raw_dir,
                 file_format=file_format,
                 buffer_size=buffer_size,
-                max_file_size_mb=max_file_size
+                max_file_size_mb=max_file_size_mb,
+                config=self.config
             )
             
-            # Initialize data exporter - fix inconsistent access
-            input_dir = raw_dir
-            output_dir = self.config.get('data.processed_directory', 'data/processed')
-            export_formats = self.config.get('export.formats', ['csv', 'hdf5'])
-            include_statistics = self.config.get('export.include_statistics', True)
-            compression = self.config.get('export.compression', True)
-            
-            self.data_exporter = DataExporter(
-                input_dir=input_dir,
-                output_dir=output_dir,
-                formats=export_formats,
-                include_statistics=include_statistics,
-                compression=compression
-            )
+            # Initialize data exporter
+            export_config = self.config.get('export', {})
+            processed_dir = data_config.get('processed_directory', 'data/processed')
+            if export_config.get('enabled', True):
+                # DataExporter expects input/output directories (strings/PathLikes), not dicts
+                self.data_exporter = DataExporter(
+                    input_dir=raw_dir,
+                    output_dir=processed_dir,
+                )
             
             self.logger.info("All components initialized successfully")
             
         except Exception as e:
-            self.logger.error(f"Component initialization failed: {e}")
+            self.logger.error(f"Failed to initialize components: {e}")
             raise
 
     async def connect_shimmer(self) -> None:
@@ -299,7 +284,7 @@ class ShimmerStreamer:
     async def _export_loop(self):
         """Background export loop"""
         # Fix inconsistent config access
-        export_interval = self.config.get('export.interval_seconds', 60)
+        export_interval = safe_config_get(self.config, 'export.interval_seconds', 60)
         
         while self.shimmer_client and self.shimmer_client.streaming:
             try:
@@ -307,7 +292,7 @@ class ShimmerStreamer:
                 await self.export_data()
             except Exception as e:
                 # Fix inconsistent config access
-                continue_on_error = self.config.get('error_handling.continue_on_error', True)
+                continue_on_error = safe_config_get(self.config, 'error_handling.continue_on_error', True)
                 self.logger.error(f"Export loop error: {e}")
                 if not continue_on_error:
                     break
@@ -358,11 +343,15 @@ async def main() -> None:
 
         # Override config with command line arguments
         if args.device:
-            if self.config is not None:
-                self.config.set('shimmer.port', args.device)  # Use Config.set() method
+            if app.config is not None:
+                if 'shimmer' not in app.config:
+                    app.config['shimmer'] = {}
+                app.config['shimmer']['port'] = args.device
         if args.rate:
-            if self.config is not None:
-                self.config.set('shimmer.sampling_rate', args.rate)  # Use Config.set() method
+            if app.config is not None:
+                if 'shimmer' not in app.config:
+                    app.config['shimmer'] = {}
+                app.config['shimmer']['sampling_rate'] = args.rate
         
         app.initialize_components()
 

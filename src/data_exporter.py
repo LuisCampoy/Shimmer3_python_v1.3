@@ -21,7 +21,7 @@ import seaborn as sns
 from scipy import signal, stats
 from scipy.fft import fft, fftfreq
 from datetime import datetime
-from utils.config_helpers import safe_config_get, normalize_config_paths
+from utils.config_helpers import safe_config_get
 
 @dataclass
 class ExportConfig:
@@ -189,24 +189,34 @@ class DataExporter:
     
     SUPPORTED_FORMATS = ['csv', 'json', 'hdf5', 'excel', 'matlab', 'parquet']
     
-    def __init__(self, config):
+    def __init__(self, input_dir: str, output_dir: str, formats: Optional[List[str]] = None, 
+                 include_statistics: bool = True, compression: bool = False, config: Any = None):
+        """Initialize DataExporter with configuration"""
+        self.input_dir = Path(input_dir)
+        self.output_dir = Path(output_dir)
+        self.formats = formats or ['csv']
+        self.include_statistics = include_statistics
+        self.compression = compression
         self.config = config
         
-        # Normalize path configurations
-        path_configs = normalize_config_paths(config, [
-            'output_directory', 
-            'input_directory'
-        ])
-        
-        # Use helper for other config access
-        self.formats = safe_config_get(config, 'formats', ['csv'])
-        self.include_statistics = safe_config_get(config, 'include_statistics', True)
-        self.min_records_threshold = safe_config_get(config, 'min_records_threshold', 1000)
+        # Use consistent config access patterns
+        self.min_records_threshold = safe_config_get(config, 'export.min_records_threshold', 1000)
         self.quarantine_corrupted = safe_config_get(config, 'export.quarantine_corrupted_files', True)
         self.enable_background_loop = safe_config_get(config, 'export.enable_background_loop', False)
+        self.chunk_size = safe_config_get(config, 'export.chunk_size', 50000)
+        
+        # Initialize export statistics
+        self.export_stats = {
+            'files_processed': 0,
+            'total_records': 0,
+            'last_export': None,
+            'errors': 0
+        }
+        
+        # Initialize processor
+        self.processor = DataProcessor()
         
         # Ensure directories exist
-        self.output_dir = Path(path_configs['output_directory'])
         self.output_dir.mkdir(parents=True, exist_ok=True)
         if self.quarantine_corrupted:
             (self.output_dir / 'quarantine').mkdir(parents=True, exist_ok=True)

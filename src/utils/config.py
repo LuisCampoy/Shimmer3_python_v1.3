@@ -9,55 +9,60 @@ class Config:
     """Configuration management class for Shimmer3 application"""
     
     def __init__(self, config_path: Optional[str] = None):
-        self.config_data: Dict[str, Any] = {}
-        
-        # Default configuration
+        """Initialize configuration with optional config file"""
+        # Enhanced defaults with more comprehensive settings
         self.defaults = {
-            'logging': {
-                'log_directory': 'logs',
-                'level': 'INFO'
-            },
             'shimmer': {
-                'device_id': None,  # Changed to a sample Bluetooth MAC address
-                'bluetooth_address': None,  # Added for Bluetooth connection
-                'port': '/dev/rfcomm0',  # changed from ttyUSB0
+                'device_id': 'shimmer3_default',
+                'port': '/dev/rfcomm0',
+                'device_address': '00:06:66:B1:4D:A1',
                 'baudrate': 115200,
+                'timeout': 5,
                 'sampling_rate': 51.2,
                 'sensors': ['accelerometer', 'gyroscope', 'magnetometer'],
-                'sensor_range':  # Added sensor range configuration
-                {
-                    'accelerometer': 2,  # ±2g
-                    'gyroscope': 250,    # ±250°/s
-                    'magnetometer': 1    # ±1.3 Ga
-                }
+                'calibration_enabled': True,
+                'auto_pair': True,
+                'max_pair_attempts': 3
             },
             'data': {
                 'raw_directory': 'data/raw',
                 'processed_directory': 'data/processed',
                 'format': 'csv',
-                'max_file_size_mb': 100,  # Added file size limit
-                'buffer_size': 1000       # Added buffer size for performance
+                'buffer_size': 1000,
+                'max_file_size_mb': 100,
+                'auto_flush_interval': 30,
+                'compression': False,
+                'backup_enabled': True
             },
             'export': {
                 'formats': ['csv', 'hdf5'],
-                'interval_seconds': 60, # Added export interval
-                'min_records_threshold': 1000, # Added minimum records threshold for export
-                'enable_statistics': True,
-                'enable_plots': False,
-                'quarantine_corrupted_files': True, # Added quarantine option
-                'real_time': False,
+                'include_statistics': True,
                 'compression': True,
-                'enable_background_loop': False,  # Added option to enable/disable background export loop
+                'interval_seconds': 60,
+                'min_records_threshold': 1000,
+                'quarantine_corrupted_files': True,
+                'enable_background_loop': False,
+                'chunk_size': 50000
+            },
+            'logging': {
+                'level': 'INFO',
+                'log_directory': 'logs',
+                'max_file_size_mb': 10,
+                'backup_count': 5,
+                'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
             },
             'display': {
                 'real_time': False,
-                'update_interval': 0.1    # Added display update interval
+                'update_interval': 0.1
             },
             'error_handling': {
                 'continue_on_error': True,
-                'max_retries': 3          # Added retry limit
+                'max_retries': 3
             }
         }
+        
+        # Initialize config data with defaults
+        self.config_data = self.defaults.copy()
         
         if config_path:
             self.load_config(config_path)
