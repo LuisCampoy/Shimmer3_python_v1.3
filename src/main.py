@@ -61,8 +61,14 @@ class ShimmerStreamer:
                 raise RuntimeError("Configuration not loaded. Cannot initialize components.")
 
             # Initialize Shimmer client with its sub-config dict
-            shimmer_config = self.config.get('shimmer', {})
-            self.shimmer_client = ShimmerClient(shimmer_config)
+            shimmer_config_dict = {
+                'port': self.config.get('shimmer.port'),
+                'baud_rate': self.config.get('shimmer.baudrate', 115200),
+                'sampling_rate': self.config.get('shimmer.sampling_rate', 51.2),
+                'sensors': self.config.get('shimmer.sensors', ['accelerometer', 'gyroscope', 'magnetometer']),
+                'device_id': self.config.get('shimmer.device_id'),
+            }
+            self.shimmer_client = ShimmerClient(shimmer_config_dict)
             
             # Initialize data logger
             data_config = self.config.get('data', {})
@@ -343,15 +349,11 @@ async def main() -> None:
 
         # Override config with command line arguments
         if args.device:
-            if app.config is not None:
-                if 'shimmer' not in app.config:
-                    app.config['shimmer'] = {}
-                app.config['shimmer']['port'] = args.device
+            if self.config is not None:
+                self.config.set('shimmer.port', args.device)  # Use Config.set() method
         if args.rate:
-            if app.config is not None:
-                if 'shimmer' not in app.config:
-                    app.config['shimmer'] = {}
-                app.config['shimmer']['sampling_rate'] = args.rate
+            if self.config is not None:
+                self.config.set('shimmer.sampling_rate', args.rate)  # Use Config.set() method
         
         app.initialize_components()
 
