@@ -40,7 +40,7 @@ class BluetoothManager:
         """Check if a Bluetooth device is already paired"""
         try:
             # Use bluetoothctl to list paired devices
-            result = subprocess.run(['bluetoothctl', 'paired-devices'], 
+            result = subprocess.run(['bluetoothctl', 'devices', 'Paired'], 
                                   capture_output=True, text=True, timeout=10)
             
             if result.returncode != 0:
@@ -152,11 +152,16 @@ class BluetoothManager:
                 result = subprocess.run(['rfcomm', 'show', str(rfcomm_port)], 
                                       capture_output=True, text=True, timeout=5)
                 
-                if device_address.upper() in result.stdout.upper():
-                    self.logger.info(f"RFCOMM device {rfcomm_device} is already bound to {device_address}")
-                    return rfcomm_device
+                if result.returncode == 0 and device_address.upper() in result.stdout.upper():
+                    # Check if the device shows "clean" status (ready for use)
+                    if "clean" in result.stdout.lower():
+                        self.logger.info(f"RFCOMM device {rfcomm_device} is already bound to {device_address} and ready")
+                        return rfcomm_device
+                    else:
+                        self.logger.info(f"RFCOMM device {rfcomm_device} is bound but not clean, will reuse anyway")
+                        return rfcomm_device
                 else:
-                    # Release existing binding
+                    # Release existing binding if it's bound to a different device
                     self.logger.info(f"Releasing existing RFCOMM binding on {rfcomm_device}")
                     subprocess.run(['sudo', 'rfcomm', 'release', str(rfcomm_port)], 
                                  capture_output=True, text=True, timeout=10)
@@ -276,10 +281,7 @@ class BluetoothManager:
         """Cleanup all RFCOMM connections"""
         try:
             self.logger.info("Cleaning up RFCOMM connections...")
-            
-            # Release all RFCOMM bindings (typically 0-3 are used)
-            for port in range(4):
-                self.release_rfcomm_binding(port)
-            
+            # Skip cleanup to avoid sudo prompts during normal shutdown
+            self.logger.info("Skipping RFCOMM cleanup to avoid sudo prompts")
         except Exception as e:
             self.logger.error(f"Error during cleanup: {e}")

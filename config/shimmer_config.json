@@ -15,14 +15,13 @@
     "max_pair_attempts": 3
   },
   "data": {
-    "buffer_size": 1000,
-    "file_rotation_size": 100000000,
-    "output_directory": "data/raw"
+    "output_directory": "data/raw",
+    "buffer_size": 1000
   },
   "export": {
+    "output_directory": "data/processed",
     "enabled": true,
     "interval_seconds": 60,
-    "output_directory": "data/processed",
     "formats": ["csv", "hdf5"],
     "include_statistics": true,
     "min_records_threshold": 1000

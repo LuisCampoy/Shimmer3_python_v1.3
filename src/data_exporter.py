@@ -21,6 +21,10 @@ import seaborn as sns
 from scipy import signal, stats
 from scipy.fft import fft, fftfreq
 from datetime import datetime
+try:
+    from .utils.path_utils import normalize_path, ensure_dir
+except ImportError:
+    from utils.path_utils import normalize_path, ensure_dir
 
 @dataclass
 class ExportConfig:
@@ -196,8 +200,13 @@ class DataExporter:
             input_dir: Input directory containing raw data files
             output_dir: Output directory for processed data
         """
-        self.input_dir = Path(input_dir)
-        self.output_dir = Path(output_dir)
+        # Normalize and ensure directories
+        normalized_input = normalize_path(input_dir, 'data/raw', 'export.input_dir')
+        normalized_output = normalize_path(output_dir, 'data/processed', 'export.output_dir')
+        ensure_dir(normalized_input)
+        ensure_dir(normalized_output)
+        self.input_dir = Path(normalized_input)
+        self.output_dir = Path(normalized_output)
         
         # Create output directory
         self.output_dir.mkdir(parents=True, exist_ok=True)

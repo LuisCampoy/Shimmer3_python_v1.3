@@ -47,6 +47,9 @@ class ShimmerStreamer:
     def load_config(self, config_path: str):
         """Load configuration from JSON file"""
         try:
+            # Ensure config_path is a string
+            if isinstance(config_path, Path):
+                config_path = str(config_path)
             with open(config_path, 'r') as f:
                 self.config = json.load(f)
             self.logger.info(f"Configuration loaded from {config_path}")
@@ -60,18 +63,39 @@ class ShimmerStreamer:
             if self.config is None:
                 raise RuntimeError("Configuration not loaded. Cannot initialize components.")
 
-            # Initialize Shimmer client - REMOVE device_id if it's being passed
+            # Initialize Shimmer client with its sub-config dict
             shimmer_config = self.config.get('shimmer', {})
-            self.shimmer_client = ShimmerClient(shimmer_config)  # Remove any device_id parameter
+            self.shimmer_client = ShimmerClient(shimmer_config)
             
             # Initialize data logger
             data_config = self.config.get('data', {})
-            self.data_logger = DataLogger(data_config)
+            raw_dir = data_config.get('raw_directory', 'data/raw')
+            file_format = data_config.get('format', 'csv')
+            max_file_size_mb = data_config.get('max_file_size_mb', data_config.get('max_file_size', 100))
+            buffer_size = data_config.get('buffer_size', 1000)
+            compression = data_config.get('compression', False)
+            auto_flush_interval = data_config.get('auto_flush_interval', 5.0)
+
+            self.data_logger = DataLogger(
+                raw_dir,
+                file_format,
+                max_file_size_mb=max_file_size_mb,
+                buffer_size=buffer_size,
+                compression=compression,
+                auto_flush_interval=auto_flush_interval,
+                export_interval_seconds=self.config.get('export', {}).get('interval_seconds', 60),
+                min_records_threshold=self.config.get('export', {}).get('min_records_threshold', 1000),
+            )
             
             # Initialize data exporter
             export_config = self.config.get('export', {})
-            if export_config.get('enabled', False):
-                self.data_exporter = DataExporter(export_config)
+            processed_dir = data_config.get('processed_directory', 'data/processed')
+            if export_config.get('enabled', True):
+                # DataExporter expects input/output directories (strings/PathLikes), not dicts
+                self.data_exporter = DataExporter(
+                    input_dir=raw_dir,
+                    output_dir=processed_dir,
+                )
             
             self.logger.info("All components initialized successfully")
             
@@ -99,8 +123,9 @@ class ShimmerStreamer:
             # Configure IMU sensors
             if not isinstance(self.config, dict):
                 raise RuntimeError("Configuration not loaded or invalid format")
-            sensors = self.config.get('shimmer.sensors', ['accelerometer', 'gyroscope', 'magnetometer'])
-            sampling_rate = self.config.get('shimmer.sampling_rate', 51.2)
+            shimmer_cfg = self.config.get('shimmer', {}) if isinstance(self.config, dict) else {}
+            sensors = shimmer_cfg.get('sensors', ['accelerometer', 'gyroscope', 'magnetometer'])
+            sampling_rate = shimmer_cfg.get('sampling_rate', 51.2)
 
             configured = await self.shimmer_client.configure_sensors(sensors, sampling_rate)
             if not configured:

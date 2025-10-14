@@ -18,6 +18,10 @@ from queue import Queue, Empty
 import gzip
 import pickle
 import pandas as pd
+try:
+    from .utils.path_utils import normalize_path, ensure_dir
+except ImportError:
+    from utils.path_utils import normalize_path, ensure_dir
 
 @dataclass
 class LogEntry:
@@ -88,8 +92,11 @@ class DataLogger:
         self.compression = kwargs.get('compression', False)
         self.auto_flush_interval = kwargs.get('auto_flush_interval', 5.0)
         
-        # Create output directory
-        self.output_dir.mkdir(parents=True, exist_ok=True)
+        # Create output directory (normalize in case config provided dict)
+        normalized_output = normalize_path(str(self.output_dir), 'data/raw', 'data.output_directory')
+        ensure_dir(normalized_output)
+        # Keep Path consistent for rest of code
+        self.output_dir = Path(normalized_output)
         
         # File management
         self.current_file: Optional[Union[Path, Any]] = None
@@ -462,11 +469,10 @@ class DataLogger:
                 'stats': self.stats.copy()
             }
             
-            # Convert datetime objects to strings
-            if metadata['stats']['session_start']:
-                metadata['stats']['session_start'] = metadata['stats']['session_start'].isoformat()
-            if metadata['stats']['last_entry_time']:
-                metadata['stats']['last_entry_time'] = metadata['stats']['last_entry_time'].isoformat()
+            # Convert any datetime objects within stats to ISO strings
+            for key, value in list(metadata['stats'].items()):
+                if isinstance(value, datetime):
+                    metadata['stats'][key] = value.isoformat()
             
             with open(metadata_file, 'w') as f:
                 json.dump(metadata, f, indent=2)

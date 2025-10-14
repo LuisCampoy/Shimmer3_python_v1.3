@@ -14,7 +14,10 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
-from src.bluetooth_manager import BluetoothManager
+try:
+    from src.bluetooth_manager import BluetoothManager
+except ImportError:
+    from bluetooth_manager import BluetoothManager
 
 class ShimmerState(Enum):
     """Shimmer device states"""
@@ -98,9 +101,10 @@ class ShimmerClient:
         self.bluetooth_manager = BluetoothManager()
         
         # Connection state
-        self.ser = None
+        self.serial_conn = None  # unified serial connection handle
         self.connected = False
         self.streaming = False
+        self.state = ShimmerState.DISCONNECTED
         
         # Data buffer
         self.data_buffer = []
@@ -131,46 +135,73 @@ class ShimmerClient:
             self.logger.info(f"Using RFCOMM device: {self.port}")
             
             # Proceed with serial connection
-            self.ser = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
+            self.serial_conn = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
             
-            if not self.ser.is_open:
-                self.ser.open()
+            if not self.serial_conn.is_open:
+                self.serial_conn.open()
             
             self.logger.info(f"Serial connection established to {self.port}")
             
-            # Wait for device to be ready
-            await asyncio.sleep(2)
-            
-            # Send inquiry command to verify connection
-            if await self.send_command('inquiry'):
-                self.logger.info("Shimmer3 device responded to inquiry command")
+            # Wait for device to be ready and clear buffers
+            await asyncio.sleep(1.0)
+            try:
+                self.serial_conn.reset_input_buffer()
+                self.serial_conn.reset_output_buffer()
+            except Exception:
+                pass
+
+            # Send inquiry command and expect inquiry response (Shimmer typically responds with 0x02)
+            inquiry = await self._send_and_expect(
+                self.COMMANDS['GET_INQUIRY_COMMAND'],
+                self.RESPONSES['INQUIRY_RESPONSE'],
+                response_len=0,
+                timeout=3.0,
+            )
+
+            if inquiry is not None:
+                self.logger.info("Shimmer3 device responded to inquiry")
                 self.connected = True
+                self.state = ShimmerState.CONNECTED
                 return True
-            else:
-                raise ConnectionError("Shimmer3 device did not respond to inquiry command")
+
+            # Fallback: try to get version response
+            version = await self._send_and_expect(
+                self.COMMANDS['GET_SHIMMER_VERSION_COMMAND'],
+                self.RESPONSES['SHIMMER_VERSION_RESPONSE'],
+                response_len=1,
+                timeout=3.0,
+            )
+            if version is not None:
+                self.logger.info(f"Shimmer3 version response received: {version[0]}")
+                self.connected = True
+                self.state = ShimmerState.CONNECTED
+                return True
+
+            raise ConnectionError("Shimmer3 device did not respond to inquiry or version requests")
                 
         except Exception as e:
             self.logger.error(f"Connection failed: {e}")
-            if hasattr(self, 'ser') and self.ser and self.ser.is_open:
-                self.ser.close()
+            if self.serial_conn and self.serial_conn.is_open:
+                self.serial_conn.close()
             return False
     
     async def disconnect(self):
         """Disconnect from Shimmer3 device and cleanup RFCOMM"""
         try:
-            if self.connected and hasattr(self, 'ser') and self.ser:
+            if self.connected and self.serial_conn:
                 # Stop streaming if active
                 if hasattr(self, 'streaming') and self.streaming:
                     await self.stop_streaming()
                 
                 # Close serial connection
-                self.ser.close()
+                self.serial_conn.close()
                 self.logger.info("Serial connection closed")
             
             # Cleanup RFCOMM bindings
             self.bluetooth_manager.cleanup_connections()
             
             self.connected = False
+            self.state = ShimmerState.DISCONNECTED
             self.logger.info("Shimmer3 device disconnected and cleaned up")
             
         except Exception as e:
@@ -570,3 +601,19 @@ class ShimmerClient:
             await asyncio.sleep(0.01)
         
         return None
+
+    async def _send_and_expect(self, command: int, expected_resp: int, response_len: int = 0, timeout: float = 2.0) -> Optional[bytes]:
+        """Send a command and wait for a specific response header (and payload length)."""
+        try:
+            # Write command
+            if not self.serial_conn or not self.serial_conn.is_open:
+                return None
+            self.serial_conn.write(bytes([command]))
+            self.serial_conn.flush()
+
+            # Wait for response with header matching expected_resp
+            resp = await self._read_response(expected_resp, response_len, timeout=timeout)
+            return resp
+        except Exception as e:
+            self.logger.error(f"_send_and_expect error: {e}")
+            return None
