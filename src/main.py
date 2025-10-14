@@ -227,7 +227,7 @@ class ShimmerStreamer:
                 await self.data_exporter.export(format_type)
 
             # Mark export as completed in data logger to reset export conditions
-            # (No mark_export_completed method in DataLogger; nothing to call here)
+            self.data_logger.mark_export_completed()
 
             self.logger.info('Data export completed successfully')
 
