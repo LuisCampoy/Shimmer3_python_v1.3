@@ -139,32 +139,31 @@ class BluetoothManager:
             self.logger.error(f"Error during pairing process: {e}")
             return False
     
-    def create_rfcomm_binding(self, device_address: str, channel: int = 1, rfcomm_port: int = 0) -> Optional[str]:
-        """Create RFCOMM binding for serial communication"""
+    def create_rfcomm_binding(self, device_address: str, channel: int = 1, rfcomm_port: int = 0, allow_rebind: bool = True) -> Optional[str]:
+        """Create RFCOMM binding for serial communication.
+        If the rfcomm device already exists and is bound to the requested device, it will be reused without release.
+        If allow_rebind is False and the device is bound to something else, we return None instead of forcibly releasing.
+        """
         try:
             rfcomm_device = f"/dev/rfcomm{rfcomm_port}"
             
             # Check if RFCOMM device already exists and is bound
             if os.path.exists(rfcomm_device):
                 self.logger.info(f"RFCOMM device {rfcomm_device} already exists")
-                
-                # Check if it's bound to our device
-                result = subprocess.run(['rfcomm', 'show', str(rfcomm_port)], 
-                                      capture_output=True, text=True, timeout=5)
-                
-                if result.returncode == 0 and device_address.upper() in result.stdout.upper():
-                    # Check if the device shows "clean" status (ready for use)
-                    if "clean" in result.stdout.lower():
-                        self.logger.info(f"RFCOMM device {rfcomm_device} is already bound to {device_address} and ready")
+                result = subprocess.run(['rfcomm', 'show', str(rfcomm_port)],
+                                        capture_output=True, text=True, timeout=5)
+                if result.returncode == 0:
+                    stdout_upper = result.stdout.upper()
+                    if device_address.upper() in stdout_upper:
+                        self.logger.info(f"RFCOMM device {rfcomm_device} already bound to target {device_address}; reusing (state: {result.stdout.strip()})")
                         return rfcomm_device
                     else:
-                        self.logger.info(f"RFCOMM device {rfcomm_device} is bound but not clean, will reuse anyway")
-                        return rfcomm_device
-                else:
-                    # Release existing binding if it's bound to a different device
-                    self.logger.info(f"Releasing existing RFCOMM binding on {rfcomm_device}")
-                    subprocess.run(['sudo', 'rfcomm', 'release', str(rfcomm_port)], 
-                                 capture_output=True, text=True, timeout=10)
+                        if not allow_rebind:
+                            self.logger.warning(f"RFCOMM device {rfcomm_device} bound to different device and allow_rebind=False; not modifying.")
+                            return None
+                        self.logger.info(f"Releasing existing RFCOMM binding on {rfcomm_device} (different device)")
+                        subprocess.run(['sudo', 'rfcomm', 'release', str(rfcomm_port)],
+                                       capture_output=True, text=True, timeout=10)
             
             # Create new RFCOMM binding
             self.logger.info(f"Creating RFCOMM binding: {rfcomm_device} -> {device_address}:{channel}")
