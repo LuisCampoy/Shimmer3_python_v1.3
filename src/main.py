@@ -47,11 +47,8 @@ class ShimmerStreamer:
     def load_config(self, config_path: str):
         """Load configuration from JSON file"""
         try:
-            # Ensure config_path is a string
-            if isinstance(config_path, Path):
-                config_path = str(config_path)
             with open(config_path, 'r') as f:
-                self.config = json.load(f)
+                self.config = json.load(f)  # This creates a dict, not a Config object
             self.logger.info(f"Configuration loaded from {config_path}")
         except Exception as e:
             self.logger.error(f"Failed to load configuration: {e}")
