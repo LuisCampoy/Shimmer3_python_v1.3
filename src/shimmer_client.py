@@ -13,6 +13,7 @@ import time
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from enum import Enum
+from utils.config_helpers import safe_config_get
 
 try:
     from src.bluetooth_manager import BluetoothManager
@@ -88,14 +89,15 @@ class ShimmerClient:
     def __init__(self, config, device_id=None):  # Add device_id parameter with default
         """Initialize Shimmer3 client with configuration"""
         self.config = config
-        self.device_id = device_id or config.get('device_id', 'shimmer3_default')
         
-        # Extract configuration parameters
-        self.port = config.get('port', '/dev/rfcomm0')
-        self.baud_rate = config.get('baud_rate', 115200)
-        self.timeout = config.get('timeout', 5)
-        self.sampling_rate = config.get('sampling_rate', 51.2)
-        self.sensors = config.get('sensors', ['accelerometer', 'gyroscope', 'magnetometer'])
+        # Use helper for consistent config access
+        self.device_id = device_id or safe_config_get(config, 'device_id', 'shimmer3_default')
+        self.port = safe_config_get(config, 'port', '/dev/rfcomm0')
+        self.baud_rate = safe_config_get(config, 'baud_rate', 115200)
+        self.timeout = safe_config_get(config, 'timeout', 5)
+        self.sampling_rate = safe_config_get(config, 'sampling_rate', 51.2)
+        self.sensors = safe_config_get(config, 'sensors', ['accelerometer', 'gyroscope', 'magnetometer'])
+        self.device_address = safe_config_get(config, 'device_address', None)
         
         # Initialize Bluetooth manager
         self.bluetooth_manager = BluetoothManager()
