@@ -103,6 +103,8 @@ class ShimmerClient:
         # New connection behavior flags
         self.manual_rfcomm = safe_config_get(config, 'manual_rfcomm', False)
         self.keep_open_on_handshake_failure = safe_config_get(config, 'keep_open_on_handshake_failure', True)
+        self.passive_connect = safe_config_get(config, 'passive_connect', False)  # if True, open port and do not send handshake
+        self.verbose_serial = safe_config_get(config, 'verbose_serial', False)    # if True, log raw incoming bytes during connect
         
         # Initialize Bluetooth manager
         self.bluetooth_manager = BluetoothManager()
@@ -165,39 +167,56 @@ class ShimmerClient:
             except Exception:
                 pass
 
-            # Attempt inquiry + version handshake only if not disabled
-            inquiry = await self._send_and_expect(
-                self.COMMANDS['GET_INQUIRY_COMMAND'],
-                self.RESPONSES['INQUIRY_RESPONSE'],
-                response_len=0,
-                timeout=3.0,
-            )
-            if inquiry is not None:
-                self.logger.info("Handshake success: inquiry response received")
+            if self.passive_connect:
+                self.logger.warning("Passive connect enabled: skipping Shimmer inquiry/version handshake.")
+                # Optionally read a small amount for diagnostics
+                start_time = time.time()
+                raw_bytes = bytearray()
+                while time.time() - start_time < 2.0:
+                    if self.serial_conn.in_waiting:
+                        raw_bytes.extend(self.serial_conn.read(self.serial_conn.in_waiting))
+                        if self.verbose_serial:
+                            self.logger.debug(f"[passive] Read {len(raw_bytes)} bytes so far: {raw_bytes[:64].hex()}...")
+                    await asyncio.sleep(0.05)
+                if raw_bytes:
+                    self.logger.info(f"Passive connect captured {len(raw_bytes)} bytes initial data")
                 self.connected = True
-                self.state = ShimmerState.CONNECTED
-                return True
-
-            version = await self._send_and_expect(
-                self.COMMANDS['GET_SHIMMER_VERSION_COMMAND'],
-                self.RESPONSES['SHIMMER_VERSION_RESPONSE'],
-                response_len=1,
-                timeout=3.0,
-            )
-            if version is not None:
-                self.logger.info(f"Handshake partial success: version response {version[0]}")
-                self.connected = True
-                self.state = ShimmerState.CONNECTED
-                return True
-
-            msg = "No inquiry/version response received"
-            if self.keep_open_on_handshake_failure:
-                self.logger.warning(msg + "; leaving port open (keep_open_on_handshake_failure=True)")
-                self.connected = True  # treat as connected so user can attempt manual commands
                 self.state = ShimmerState.CONNECTED
                 return True
             else:
-                raise ConnectionError(msg)
+                # Attempt inquiry + version handshake only if not disabled
+                inquiry = await self._send_and_expect(
+                    self.COMMANDS['GET_INQUIRY_COMMAND'],
+                    self.RESPONSES['INQUIRY_RESPONSE'],
+                    response_len=0,
+                    timeout=3.0,
+                )
+                if inquiry is not None:
+                    self.logger.info("Handshake success: inquiry response received")
+                    self.connected = True
+                    self.state = ShimmerState.CONNECTED
+                    return True
+
+                version = await self._send_and_expect(
+                    self.COMMANDS['GET_SHIMMER_VERSION_COMMAND'],
+                    self.RESPONSES['SHIMMER_VERSION_RESPONSE'],
+                    response_len=1,
+                    timeout=3.0,
+                )
+                if version is not None:
+                    self.logger.info(f"Handshake partial success: version response {version[0]}")
+                    self.connected = True
+                    self.state = ShimmerState.CONNECTED
+                    return True
+
+                msg = "No inquiry/version response received"
+                if self.keep_open_on_handshake_failure:
+                    self.logger.warning(msg + "; leaving port open (keep_open_on_handshake_failure=True)")
+                    self.connected = True  # treat as connected so user can attempt manual commands
+                    self.state = ShimmerState.CONNECTED
+                    return True
+                else:
+                    raise ConnectionError(msg)
 
         except Exception as e:
             self.logger.error(f"Connection failed: {e}")
