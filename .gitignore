@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Packaging
+*.egg-info/
+*.egg
+/dist/
+/build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+logs/
+*.log
+
+# Data outputs
+data/raw/
+data/processed/
+
+# Temp files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Bluetooth state (if any dumps)
+*.pcap
+
+# Coverage / test outputs
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Local config overrides
+config/local*.json
