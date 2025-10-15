@@ -1,3 +1,0 @@
-2025-10-12 11:14:56,962 - main - INFO - Shimmer3 Streamer Application Initialized
-2025-10-12 11:14:56,970 - data_logger - ERROR - Error creating new file: 'files_created'
-2025-10-12 11:14:56,970 - main - ERROR - Failed to initialize components: 'files_created'

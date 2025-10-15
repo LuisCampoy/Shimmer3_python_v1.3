@@ -1,9 +1,0 @@
-2025-10-10 16:52:15,881 - main - INFO - Shimmer3 Streamer Application Initialized
-2025-10-10 16:52:15,889 - data_logger - INFO - Created new log file: data/raw/shimmer3_data_20251010_165215_001_20251010_165215.csv
-2025-10-10 16:52:15,890 - data_logger - INFO - DataLogger initialized - Format: csv, Output: data/raw, Buffer: 1000
-2025-10-10 16:52:15,890 - data_exporter - INFO - DataExporter initialized - Input: data/raw, Output: data/processed
-2025-10-10 16:52:15,890 - main - INFO - All components initialized successfully
-2025-10-10 16:52:15,890 - shimmer_client - INFO - Attempting to connect to Shimmer3 on /dev/rfcomm0
-2025-10-10 16:52:15,890 - shimmer_client - ERROR - Failed to establish communication with Shimmer3: [Errno 2] could not open port /dev/rfcomm0: [Errno 2] No such file or directory: '/dev/rfcomm0'
-2025-10-10 16:52:15,890 - main - ERROR - Could not connect to Shimmer3. Aborting initialization.
-2025-10-10 16:52:15,890 - main - ERROR - Failed to connect/configure Shimmer3: Shimmer3 connection failed
